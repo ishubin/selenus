@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright 2012 Ivan Shubin http://mindengine.net
+* Copyright < YEAR > Ivan Shubin http://mindengine.net
 * 
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -13,36 +13,3 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 ******************************************************************************/
-package net.mindengine.selenus.web.objects.form;
-
-import org.openqa.selenium.WebElement;
-
-public class Checkbox extends AbstractFormObject {
-
-	
-	public boolean isChecked() {
-		return findWebDriverElement().isSelected();
-	}
-	
-	public void check() {
-		WebElement webElement = findWebDriverElement();
-		if( !webElement.isSelected() ) {
-			webElement.click();
-		}
-	}
-	
-	public void uncheck() {
-		WebElement webElement = findWebDriverElement();
-		if( webElement.isSelected() ) {
-			webElement.click();
-		}
-	}
-	
-	
-	
-	@Override
-	public String getTypeString() {
-		return "checkbox";
-	}
-
-}
