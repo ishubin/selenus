@@ -82,7 +82,5 @@ public class SampleAppTest {
 			Assert.assertEquals(article, article.getDateLabel().getParentLayout());
 			i++;
 		}
-		
 	}
-
 }
