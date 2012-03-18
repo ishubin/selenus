@@ -18,48 +18,46 @@ package net.mindengine.selenus.sampleapp.pages;
 import org.openqa.selenium.support.FindBy;
 
 import net.mindengine.selenus.annotations.Named;
-import net.mindengine.selenus.web.Page;
+import net.mindengine.selenus.web.objects.Label;
 import net.mindengine.selenus.web.objects.Link;
+import net.mindengine.selenus.web.objects.PageObjectList;
 import net.mindengine.selenus.web.objects.WebLayout;
 
-@Named("Main")
-public class MainPage extends Page {
+@Named("Articles")
+public class ArticlesPage extends MainPage {
 
-	@Named("Header") @FindBy(id="logo")
-	private Link headerLink;
-	
-	@Named("Login") @FindBy(css="#loginLink")
-	private Link loginLink;
-	
-	@Named("Login") @FindBy(xpath="//div[@id='login-popup']")
-	private LoginPopup loginPopup;
+	public static class ArticleLayout extends WebLayout {
+		@Named("Title") @FindBy(className="article-title")
+		private Label titleLabel;
+		
+		@Named("Date") @FindBy(className="article-date")
+		private Label dateLabel;
+		
+		@Named("Text") @FindBy(className="article-text")
+		private Label textLabel;
+		
+		@Named("Author") @FindBy(css=".article-footer a")
+		private Link authorLink;
 
-	
-	public static class Menu extends WebLayout {
-		@Named("Articles") @FindBy(linkText="Articles")
-		private Link articlesLink;
-
-		public Link getArticlesLink() {
-			return articlesLink;
+		public Label getTitleLabel() {
+			return titleLabel;
+		}
+		public Label getDateLabel() {
+			return dateLabel;
+		}
+		public Label getTextLabel() {
+			return textLabel;
+		}
+		public Link getAuthorLink() {
+			return authorLink;
 		}
 	}
 	
-	@Named("Menu") @FindBy(id="navigation")
-	private Menu menu;
-	
-	public Menu getMenu() {
-		return menu;
-	}
-	public Link getHeaderLink() {
-		return headerLink;
-	}
+	@Named("Articles") @FindBy(xpath="//div[@class='short-article']")
+	private PageObjectList<ArticleLayout> articles;
 
-	public Link getLoginLink() {
-		return loginLink;
-	}
-
-	public LoginPopup getLoginPopup() {
-		return loginPopup;
+	public PageObjectList<ArticleLayout> getArticles() {
+		return articles;
 	}
 	
 }

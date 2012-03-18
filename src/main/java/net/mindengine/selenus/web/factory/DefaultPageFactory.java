@@ -17,8 +17,11 @@ package net.mindengine.selenus.web.factory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.Collection;
 
+import org.openqa.selenium.support.FindBy;
 
+import net.mindengine.oculus.experior.ClassUtils;
 import net.mindengine.selenus.annotations.Named;
 import net.mindengine.selenus.exceptions.InvalidPageException;
 import net.mindengine.selenus.web.Page;
@@ -40,22 +43,28 @@ public class DefaultPageFactory extends PageFactory {
 	@Override
 	public <T> T createPage(Class<T> pageClass, PageObjectActionListener pageObjectActionListener) {
 		try {
-			
 			Constructor<T> constructor = pageClass.getConstructor();
 			T page = constructor.newInstance();
 			
-			Field[] fields = pageClass.getDeclaredFields();
+			Collection<Field> fields = ClassUtils.getAllFields(pageClass);
 			
 			for( Field field : fields ) {
-				if ( AbstractPageObject.class.isAssignableFrom(field.getType()) ) {
-					AbstractPageObject pageObject = (AbstractPageObject) getPageObjectFactory().createPageObject(field);
-					if ( pageObject instanceof PageObjectList ) {
-						PageObjectList<?> list = (PageObjectList<?>) pageObject;
-						list.setPageObjectFactory(getPageObjectFactory());
+				if ( field.getAnnotation(FindBy.class) != null ) {
+					if ( AbstractPageObject.class.isAssignableFrom(field.getType()) ) {
+						AbstractPageObject pageObject = (AbstractPageObject) getPageObjectFactory().createPageObject(field);
+						if ( pageObject instanceof PageObjectList ) {
+							PageObjectList<?> list = (PageObjectList<?>) pageObject;
+							list.setPageObjectFactory(getPageObjectFactory());
+						}
+						
+						ClassUtils.setFieldValue(field, page, pageObject);
+						
+						pageObject.setPageObjectActionListener(pageObjectActionListener);
+						
+						if ( Page.class.isAssignableFrom(pageClass) ) {
+							pageObject.setPage((Page) page);
+						}
 					}
-					
-					this.setPageObject(page, field, pageObject);
-					pageObject.setPageObjectActionListener(pageObjectActionListener);
 				}
 			}
 			

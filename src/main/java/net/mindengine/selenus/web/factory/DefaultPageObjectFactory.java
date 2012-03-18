@@ -16,9 +16,12 @@
 package net.mindengine.selenus.web.factory;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Collection;
 
+import net.mindengine.oculus.experior.ClassUtils;
 import net.mindengine.selenus.annotations.Named;
 import net.mindengine.selenus.exceptions.InvalidPageObjectException;
 import net.mindengine.selenus.web.objects.AbstractPageObject;
@@ -41,13 +44,31 @@ public class DefaultPageObjectFactory extends PageObjectFactory {
 				return pageObjectClass.getConstructor(Class.class).newInstance(new Object[]{null});
 			}
 			else {
-				return pageObjectClass.getConstructor().newInstance();
+				T pageObject = pageObjectClass.getConstructor().newInstance();
+				
+				if ( pageObject instanceof WebLayout) {
+					instantiateAllWebLayoutFields(pageObject);
+				}
+				
+				return pageObject;
 			}
 		} catch (Exception e) {
 			throw new InvalidPageObjectException("Cannot get default constructor for page object: "+ pageObjectClass, e);
 		}
 	}
 
+	private void instantiateAllWebLayoutFields(Object layout) throws SecurityException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		Collection<Field> fields = ClassUtils.getAllFields(layout.getClass());
+		for( Field field : fields ) {
+			if ( field.getAnnotation(FindBy.class) != null ) { 
+				if ( AbstractPageObject.class.isAssignableFrom(field.getType()) ) {
+				    Object pageObject = createPageObject((WebLayout) layout, field);
+				    ClassUtils.setFieldValue(field, layout, pageObject);
+				}
+			}
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T createPageObject(WebLayout layout, Class<T> pageObjectClass) {

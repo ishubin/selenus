@@ -17,7 +17,9 @@ package net.mindengine.selenus.web;
 
 import java.util.List;
 
+import net.mindengine.selenus.exceptions.InvalidPageException;
 import net.mindengine.selenus.exceptions.NoWebDriverException;
+import net.mindengine.selenus.web.factory.PageFactory;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -27,6 +29,7 @@ public class Browser {
 	private String name;
 	private WebDriver driver;
 	private String type;
+	private PageFactory pageFactory;
 	
 	public Browser () {
 	}
@@ -97,6 +100,24 @@ public class Browser {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public PageFactory getPageFactory() {
+		return pageFactory;
+	}
+
+	public void setPageFactory(PageFactory pageFactory) {
+		this.pageFactory = pageFactory;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T extends Page> T page(Class<T> pageClass) {
+		if( pageFactory == null ) {
+			throw new InvalidPageException("There is no page factory specified");
+		}
+		Page page = pageFactory.createPage(pageClass);
+		page.setBrowser(this);
+		return (T) page;
 	}
 
 }

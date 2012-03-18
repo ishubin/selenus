@@ -15,9 +15,6 @@
 ******************************************************************************/
 package net.mindengine.selenus.web.factory;
 
-import java.lang.reflect.Field;
-
-import net.mindengine.selenus.exceptions.InvalidPageException;
 import net.mindengine.selenus.web.objects.PageObjectActionListener;
 
 public abstract class PageFactory {
@@ -40,12 +37,9 @@ public abstract class PageFactory {
 		this.pageObjectFactory = pageObjectFactory;
 	}
 	
-	protected void setPageObject(Object page, Field field, Object value) {
-		field.setAccessible(true);
-		try {
-			field.set(page, value);
-		} catch (Exception e) {
-			throw new InvalidPageException("Cannot create page object for field '"+field.getName()+"' of "+field.getDeclaringClass().getName(), e);
-		}
+	public static PageFactory defaultPageFactory() {
+		return new DefaultPageFactory(new DefaultPageObjectFactory());
 	}
+	
+	
 }

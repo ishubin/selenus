@@ -22,11 +22,13 @@ import net.mindengine.selenus.web.Page;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 public abstract class AbstractPageObject {
 
+	public static final int DEFAULT_WAIT_TIMEOUT = 30;
 	private String name;
 	private By locator;
 	private Page page;
@@ -45,6 +47,10 @@ public abstract class AbstractPageObject {
 		return findPage().getBrowser();
 	}
 	
+	public String getText() {
+		return findWebDriverElement().getText();
+	}
+	
 	public void dragAndDrop(AbstractPageObject target) {
 		Actions builder = new Actions(findBrowser().findDriver());
 		builder.dragAndDrop(findWebDriverElement(), target.findWebDriverElement()).build().perform();
@@ -57,6 +63,11 @@ public abstract class AbstractPageObject {
 	
 	public void click() {
 		findWebDriverElement().click();
+	}
+	
+	public void clickAndWaitFor(AbstractPageObject pageObject) {
+		findWebDriverElement().click();
+		pageObject.waitForItToAppear();
 	}
 	
 	public Dimension getSize() {
@@ -164,5 +175,43 @@ public abstract class AbstractPageObject {
 
 	public void setPageObjectActionListener(PageObjectActionListener pageObjectActionListener) {
 		this.pageObjectActionListener = pageObjectActionListener;
+	}
+	
+	/**
+	 * Waits for 30 seconds until the page object becomes visible
+	 */
+	public void waitForItToAppear() {
+		// TODO Auto-generated method stub
+		waitForItToAppear(DEFAULT_WAIT_TIMEOUT);
+	}
+	
+	/**
+	 * Waits for specified amount of time until the page object becomes visible
+	 * @param timeoutSeconds Time in seconds after which {@link TimeoutException} will be thrown
+	 */
+	public void waitForItToAppear(int timeoutSeconds) {
+		if ( timeoutSeconds < 1 ) {
+			throw new IllegalArgumentException("Timeout should not be negeative or zero");
+		}
+		while ( timeoutSeconds-- > 0) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+			if ( this.isDisplayed() ) {
+				return;
+			}
+		}
+		throw new TimeoutException(this.toString() + " didn't appear on page");
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder text = new StringBuilder();
+		if ( name != null) {
+			text.append("\"").append(name).append("\" ");
+		}
+		text.append(this.getTypeString());
+		return super.toString();
 	}
 }

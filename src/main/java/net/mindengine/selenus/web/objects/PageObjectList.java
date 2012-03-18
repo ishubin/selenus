@@ -42,10 +42,10 @@ public class PageObjectList<T extends AbstractPageObject> extends WebLayout impl
 	public synchronized List<WebElement> findWebDriverElements () {
 		if( _webDriverElements == null ) {
 			if ( getParentLayout() != null) {
-				return getParentLayout().findWebDriverElement().findElements(getLocator());
+				_webDriverElements = getParentLayout().findWebDriverElement().findElements(getLocator());
 			}
 			else {
-				getPage().findElements(getLocator());
+				_webDriverElements = getPage().findElements(getLocator());
 			}
 		}
 		return _webDriverElements;
@@ -53,6 +53,14 @@ public class PageObjectList<T extends AbstractPageObject> extends WebLayout impl
 	
 	public int size() {
 		return findWebDriverElements().size();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public T get(int index) {
+		WebElement element = findWebDriverElements().get(index);
+		AbstractPageObject pageObject =  getPageObjectFactory().createPageObject(this, getElementType());
+		pageObject.setWebDriverElement(element);
+		return (T) pageObject;
 	}
 	
 	@Override
@@ -83,5 +91,9 @@ public class PageObjectList<T extends AbstractPageObject> extends WebLayout impl
 		this.elementType = elementType;
 	}
 
+	@Override
+	public String getTypeString() {
+		return "list";
+	}
 
 }

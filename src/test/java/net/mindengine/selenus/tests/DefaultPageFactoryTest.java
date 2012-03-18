@@ -19,6 +19,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import net.mindengine.selenus.sampleapp.pages.MainPage;
 import net.mindengine.selenus.samplepages.SamplePage;
 import net.mindengine.selenus.web.factory.DefaultPageFactory;
 import net.mindengine.selenus.web.factory.DefaultPageObjectFactory;
@@ -73,4 +74,12 @@ public class DefaultPageFactoryTest {
 		Assert.assertEquals(factory.getPageObjectFactory(), page.getLayouts().getPageObjectFactory());
 	}
 	
+	@Test
+	public void createsPageWithComplexWebLayouts() {
+		MainPage page = factory.createPage(MainPage.class);
+		Assert.assertNotNull(page);
+		Assert.assertNotNull(page.getLoginPopup());
+		Assert.assertNotNull(page.getLoginPopup().getLoginTextField());
+		Assert.assertEquals(page.getLoginPopup(), page.getLoginPopup().getLoginTextField().getParentLayout());
+	}
 }
