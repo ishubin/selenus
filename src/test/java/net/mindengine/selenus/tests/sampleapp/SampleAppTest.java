@@ -15,6 +15,13 @@
 ******************************************************************************/
 package net.mindengine.selenus.tests.sampleapp;
 
+import java.io.File;
+
+import net.mindengine.oculus.experior.ExperiorConfig;
+import net.mindengine.oculus.experior.exception.TestConfigurationException;
+import net.mindengine.oculus.experior.suite.Suite;
+import net.mindengine.oculus.experior.suite.SuiteRunner;
+import net.mindengine.oculus.experior.suite.XmlSuiteParser;
 import net.mindengine.selenus.sampleapp.pages.ArticlesPage;
 import net.mindengine.selenus.sampleapp.pages.MainPage;
 import net.mindengine.selenus.web.Browser;

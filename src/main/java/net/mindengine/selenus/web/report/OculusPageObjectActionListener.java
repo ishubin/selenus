@@ -15,6 +15,7 @@
 ******************************************************************************/
 package net.mindengine.selenus.web.report;
 
+import net.mindengine.oculus.experior.reporter.Report;
 import net.mindengine.selenus.web.objects.AbstractPageObject;
 import net.mindengine.selenus.web.objects.PageObjectActionListener;
 
@@ -25,6 +26,10 @@ import net.mindengine.selenus.web.objects.PageObjectActionListener;
  */
 public class OculusPageObjectActionListener implements PageObjectActionListener {
 
+	public OculusPageObjectActionListener(Report report) {
+		// TODO Auto-generated constructor stub
+	}
+	
 	@Override
 	public void onClick(AbstractPageObject pageObject) {
 		// TODO Auto-generated method stub

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Simple Selenus suite" runnerId="1">
+
+	<parameter name="browser" value="firefox"/>
+	
+	<test id="1" name="Custom test group" mapping="net.mindengine.selenus.sampleapp.SelenusSample">
+    </test>
+</suite>

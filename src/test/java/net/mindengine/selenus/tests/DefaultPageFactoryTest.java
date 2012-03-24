@@ -15,18 +15,18 @@
 ******************************************************************************/
 package net.mindengine.selenus.tests;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import net.mindengine.selenus.sampleapp.pages.MainPage;
+import net.mindengine.selenus.samplepages.PageObjectListenerMock;
 import net.mindengine.selenus.samplepages.SamplePage;
 import net.mindengine.selenus.web.factory.DefaultPageFactory;
 import net.mindengine.selenus.web.factory.DefaultPageObjectFactory;
 import net.mindengine.selenus.web.factory.PageFactory;
 import net.mindengine.selenus.web.objects.PageObjectActionListener;
 import net.mindengine.selenus.web.objects.WebLayout;
-import net.mindengine.selenus.web.report.OculusPageObjectActionListener;
+
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class DefaultPageFactoryTest {
 
@@ -56,8 +56,8 @@ public class DefaultPageFactoryTest {
 	
 	@Test
 	public void createsPageWithActionListener() {
-		PageObjectActionListener listener = new OculusPageObjectActionListener();
-		SamplePage page = factory.createPage(SamplePage.class, listener);
+		PageObjectActionListener listener = new PageObjectListenerMock();
+		SamplePage page = factory.createPage(SamplePage.class, listener, null);
 		
 		Assert.assertNotNull(page);
 		Assert.assertEquals("Some sample page", page.getName());

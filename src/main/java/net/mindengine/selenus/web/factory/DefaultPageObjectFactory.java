@@ -33,6 +33,7 @@ import org.openqa.selenium.support.pagefactory.Annotations;
 
 public class DefaultPageObjectFactory extends PageObjectFactory {
 
+	
 	@Override
 	public <T> T createPageObject(Class<T> pageObjectClass) {
 		if ( pageObjectClass == null) {
@@ -40,18 +41,19 @@ public class DefaultPageObjectFactory extends PageObjectFactory {
 		}
 		
 		try {
+			T pageObject = null;
 			if ( PageObjectList.class.isAssignableFrom(pageObjectClass)) {
-				return pageObjectClass.getConstructor(Class.class).newInstance(new Object[]{null});
+				 pageObject = pageObjectClass.getConstructor(Class.class).newInstance(new Object[]{null});
 			}
 			else {
-				T pageObject = pageObjectClass.getConstructor().newInstance();
+				pageObject = pageObjectClass.getConstructor().newInstance();
 				
 				if ( pageObject instanceof WebLayout) {
 					instantiateAllWebLayoutFields(pageObject);
 				}
-				
-				return pageObject;
 			}
+			
+			return pageObject;
 		} catch (Exception e) {
 			throw new InvalidPageObjectException("Cannot get default constructor for page object: "+ pageObjectClass, e);
 		}
@@ -104,8 +106,7 @@ public class DefaultPageObjectFactory extends PageObjectFactory {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void setGenericTypeAsElementTypeInPageObjectList(Field field,
-			AbstractPageObject pageObject) {
+	private void setGenericTypeAsElementTypeInPageObjectList(Field field, AbstractPageObject pageObject) {
 		Type type = field.getGenericType();
 		if ( type != null && type instanceof ParameterizedType ) {
 			ParameterizedType parameterizedType = (ParameterizedType)type;

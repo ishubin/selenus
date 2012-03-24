@@ -28,6 +28,7 @@ import net.mindengine.selenus.web.Page;
 import net.mindengine.selenus.web.objects.AbstractPageObject;
 import net.mindengine.selenus.web.objects.PageObjectActionListener;
 import net.mindengine.selenus.web.objects.PageObjectList;
+import net.mindengine.selenus.web.verificators.VerificatorProvider;
 
 public class DefaultPageFactory extends PageFactory {
 	
@@ -37,11 +38,11 @@ public class DefaultPageFactory extends PageFactory {
 	
 	@Override
 	public <T> T createPage(Class<T> pageClass) {
-		return this.createPage(pageClass, null);
+		return this.createPage(pageClass, null, null);
 	}
 
 	@Override
-	public <T> T createPage(Class<T> pageClass, PageObjectActionListener pageObjectActionListener) {
+	public <T> T createPage(Class<T> pageClass, PageObjectActionListener pageObjectActionListener, VerificatorProvider verificatorProvider) {
 		try {
 			Constructor<T> constructor = pageClass.getConstructor();
 			T page = constructor.newInstance();
@@ -60,6 +61,7 @@ public class DefaultPageFactory extends PageFactory {
 						ClassUtils.setFieldValue(field, page, pageObject);
 						
 						pageObject.setPageObjectActionListener(pageObjectActionListener);
+						pageObject.setVerificatorProvider(verificatorProvider);
 						
 						if ( Page.class.isAssignableFrom(pageClass) ) {
 							pageObject.setPage((Page) page);

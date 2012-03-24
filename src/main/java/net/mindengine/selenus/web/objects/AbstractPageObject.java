@@ -18,6 +18,8 @@ package net.mindengine.selenus.web.objects;
 import net.mindengine.selenus.exceptions.InvalidPageObjectException;
 import net.mindengine.selenus.web.Browser;
 import net.mindengine.selenus.web.Page;
+import net.mindengine.selenus.web.verificators.DefaultPageObjectVerificatorContainer;
+import net.mindengine.selenus.web.verificators.VerificatorProvider;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -34,6 +36,8 @@ public abstract class AbstractPageObject {
 	private Page page;
 	private WebLayout parentLayout;
 	private PageObjectActionListener pageObjectActionListener;
+	private VerificatorProvider verificatorProvider;
+	
 	/**
 	 * Used in findWebDriverElement method so it is instantiated only once
 	 */
@@ -205,6 +209,19 @@ public abstract class AbstractPageObject {
 		throw new TimeoutException(this.toString() + " didn't appear on page");
 	}
 	
+	
+	public String getFullName() {
+		StringBuilder builder = new StringBuilder();
+		if ( this.getName() != null ) {
+			builder.append("\"").append(this.getName()).append("\" ");
+		}
+		builder.append(this.getTypeString());
+		if ( this.parentLayout != null ) {
+			builder.append(" in ").append(this.getParentLayout().getFullName());
+		}
+		return builder.toString();
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder text = new StringBuilder();
@@ -214,4 +231,33 @@ public abstract class AbstractPageObject {
 		text.append(this.getTypeString());
 		return super.toString();
 	}
+	
+	public DefaultPageObjectVerificatorContainer verifyThat(){
+		return new DefaultPageObjectVerificatorContainer(false, this, findVerificatorProvider());
+	}
+	
+	public DefaultPageObjectVerificatorContainer assertThat(){
+		return new DefaultPageObjectVerificatorContainer(true, this, findVerificatorProvider());
+	}
+
+	public VerificatorProvider getVerificatorProvider() {
+		return verificatorProvider;
+	}
+
+	public void setVerificatorProvider(VerificatorProvider verificatorProvider) {
+		this.verificatorProvider = verificatorProvider;
+	}
+	
+	public VerificatorProvider findVerificatorProvider() {
+		if ( verificatorProvider != null ) {
+			return verificatorProvider;
+		}
+		else if (getParentLayout() != null) {
+			return getParentLayout().findVerificatorProvider(); 
+		}
+		else {
+			throw new InvalidPageObjectException("There is no verificator provider specified for page object: " + toString());
+		}
+	}
+	
 }

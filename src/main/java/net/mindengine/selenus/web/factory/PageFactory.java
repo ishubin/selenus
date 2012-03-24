@@ -16,6 +16,7 @@
 package net.mindengine.selenus.web.factory;
 
 import net.mindengine.selenus.web.objects.PageObjectActionListener;
+import net.mindengine.selenus.web.verificators.VerificatorProvider;
 
 public abstract class PageFactory {
 
@@ -26,7 +27,7 @@ public abstract class PageFactory {
 	
 	public abstract <T> T createPage(Class<T> pageClass);
 
-	public abstract <T> T createPage(Class<T> pageClass, PageObjectActionListener listener);
+	public abstract <T> T createPage(Class<T> pageClass, PageObjectActionListener listener, VerificatorProvider verificatorProvider);
 
 	public PageObjectFactory getPageObjectFactory() {
 		return pageObjectFactory;
