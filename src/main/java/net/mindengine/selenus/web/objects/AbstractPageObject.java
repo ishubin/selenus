@@ -15,6 +15,7 @@
 ******************************************************************************/
 package net.mindengine.selenus.web.objects;
 
+import net.mindengine.oculus.experior.reporter.ReportDesign;
 import net.mindengine.selenus.exceptions.InvalidPageObjectException;
 import net.mindengine.selenus.web.Browser;
 import net.mindengine.selenus.web.Page;
@@ -58,20 +59,39 @@ public abstract class AbstractPageObject {
 	public void dragAndDrop(AbstractPageObject target) {
 		Actions builder = new Actions(findBrowser().findDriver());
 		builder.dragAndDrop(findWebDriverElement(), target.findWebDriverElement()).build().perform();
+		
+		PageObjectActionListener listener = findPageObjectActionListener();
+		if ( listener != null ) {
+			listener.dragAndDrop(this, target);
+		}
 	}
 	
+
 	public void dragAndDrop(int xOffset, int yOffset) {
 		Actions builder = new Actions(findBrowser().findDriver());
 		builder.dragAndDropBy(findWebDriverElement(), xOffset, yOffset).build().perform();
+		
+		PageObjectActionListener listener = findPageObjectActionListener();
+		if ( listener != null ) {
+			listener.dragAndDropBy(this, xOffset, yOffset);
+		}
 	}
 	
 	public void click() {
 		findWebDriverElement().click();
+		PageObjectActionListener listener = findPageObjectActionListener();
+		if ( listener != null ) {
+			listener.click(this);
+		}
 	}
 	
 	public void clickAndWaitFor(AbstractPageObject pageObject) {
 		findWebDriverElement().click();
 		pageObject.waitForItToAppear();
+		PageObjectActionListener listener = findPageObjectActionListener();
+		if ( listener != null ) {
+			listener.click(this);
+		}
 	}
 	
 	public Dimension getSize() {
@@ -185,7 +205,6 @@ public abstract class AbstractPageObject {
 	 * Waits for 30 seconds until the page object becomes visible
 	 */
 	public void waitForItToAppear() {
-		// TODO Auto-generated method stub
 		waitForItToAppear(DEFAULT_WAIT_TIMEOUT);
 	}
 	
@@ -213,7 +232,10 @@ public abstract class AbstractPageObject {
 	public String getFullName() {
 		StringBuilder builder = new StringBuilder();
 		if ( this.getName() != null ) {
-			builder.append("\"").append(this.getName()).append("\" ");
+			builder.append(ReportDesign.bold(this.getName())).append(" ");
+		}
+		else { 
+			builder.append("Unknown");
 		}
 		builder.append(this.getTypeString());
 		if ( this.parentLayout != null ) {
@@ -258,6 +280,16 @@ public abstract class AbstractPageObject {
 		else {
 			throw new InvalidPageObjectException("There is no verificator provider specified for page object: " + toString());
 		}
+	}
+	
+	public PageObjectActionListener findPageObjectActionListener() {
+		if ( this.pageObjectActionListener != null ) {
+			return this.pageObjectActionListener;
+		}
+		else if ( this.getParentLayout() != null) {
+			return getParentLayout().findPageObjectActionListener();
+		}
+		return null;
 	}
 	
 }

@@ -17,11 +17,11 @@ package net.mindengine.selenus.web.objects;
 
 public interface PageObjectActionListener {
 	
-	public void onClick(AbstractPageObject pageObject);
+	public void click(AbstractPageObject pageObject);
 	
-	public void onDragAndDrop(AbstractPageObject pageObject, AbstractPageObject targetPageObject);
+	public void dragAndDrop(AbstractPageObject pageObject, AbstractPageObject targetPageObject);
 	
-	public void onDragAndDropBy(AbstractPageObject pageObject, int xOffset, int yOffset);
+	public void dragAndDropBy(AbstractPageObject pageObject, int xOffset, int yOffset);
 	
 	public void selectByValue(AbstractPageObject pageObject, String value);
 	

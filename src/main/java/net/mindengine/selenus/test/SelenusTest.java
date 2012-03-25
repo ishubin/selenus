@@ -1,5 +1,8 @@
 package net.mindengine.selenus.test;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import net.mindengine.oculus.experior.annotations.DataProvider;
 import net.mindengine.oculus.experior.framework.test.OculusTest;
 import net.mindengine.oculus.experior.test.descriptors.TestInformation;
@@ -47,6 +50,8 @@ public class SelenusTest extends OculusTest {
 	 */
 	private String defaultBrowserType = FIREFOX;
 	
+	private List<Browser> _usedBrowsers = new LinkedList<Browser>();
+	
 	@Override
 	public void onBeforeTest(TestInformation testInformation) throws Exception {
 		super.onBeforeTest(testInformation);
@@ -64,11 +69,22 @@ public class SelenusTest extends OculusTest {
 		verificatorProvider = new OculusVerificatorProvider(getReport());
 	}
 	
+	
+	@Override
+	public void onAfterTest(TestInformation testInformation) throws Exception {
+		super.onAfterTest(testInformation);
+		
+		for ( Browser browser : _usedBrowsers) {
+			browser.close();
+		}
+	}
+	
 	@DataProvider
 	protected Browser browser(DataSourceInformation dataSourceInformation) {
 		if ( dataSourceInformation.getType() != null && !dataSourceInformation.getType().isEmpty()) {
 			try {
 				Browser browser = new Browser(createWebDriver(dataSourceInformation.getType()));
+				_usedBrowsers.add(browser);
 				return browser;
 			}
 			catch (Exception e) {

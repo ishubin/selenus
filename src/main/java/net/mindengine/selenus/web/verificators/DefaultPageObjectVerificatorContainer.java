@@ -6,8 +6,8 @@ import net.mindengine.oculus.experior.framework.verification.text.TextVerificato
 import net.mindengine.selenus.web.objects.AbstractPageObject;
 
 public class DefaultPageObjectVerificatorContainer {
-	private boolean assertion = false;
-	private AbstractPageObject pageObject;
+	protected boolean assertion = false;
+	protected AbstractPageObject pageObject;
 	private VerificatorProvider verificatorProvider;
 	
 	public DefaultPageObjectVerificatorContainer(boolean assertion, AbstractPageObject pageObject, VerificatorProvider verificatorProvider) {
@@ -34,7 +34,7 @@ public class DefaultPageObjectVerificatorContainer {
 		return findVericatorProvider().textVerificator(this.pageObject, itemName, provider);
 	}
 
-	private VerificatorProvider findVericatorProvider() {
+	protected VerificatorProvider findVericatorProvider() {
 		if ( verificatorProvider == null ) {
 			throw new IllegalArgumentException("Verificator provider is not specified");
 		}

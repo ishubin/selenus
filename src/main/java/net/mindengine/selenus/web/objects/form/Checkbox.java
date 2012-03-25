@@ -15,6 +15,8 @@
 ******************************************************************************/
 package net.mindengine.selenus.web.objects.form;
 
+import net.mindengine.selenus.web.objects.PageObjectActionListener;
+
 import org.openqa.selenium.WebElement;
 
 public class Checkbox extends AbstractFormObject {
@@ -28,6 +30,10 @@ public class Checkbox extends AbstractFormObject {
 		WebElement webElement = findWebDriverElement();
 		if( !webElement.isSelected() ) {
 			webElement.click();
+			PageObjectActionListener listener = findPageObjectActionListener();
+			if ( listener != null ) {
+				listener.click(this);
+			}
 		}
 	}
 	
@@ -35,6 +41,10 @@ public class Checkbox extends AbstractFormObject {
 		WebElement webElement = findWebDriverElement();
 		if( webElement.isSelected() ) {
 			webElement.click();
+			PageObjectActionListener listener = findPageObjectActionListener();
+			if ( listener != null ) {
+				listener.click(this);
+			}
 		}
 	}
 	

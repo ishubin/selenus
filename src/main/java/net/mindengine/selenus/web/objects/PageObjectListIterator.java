@@ -27,6 +27,7 @@ public class PageObjectListIterator<T extends AbstractPageObject> implements Ite
 	private PageObjectFactory _pageObjectFactory;
 	private Iterator<WebElement> _webDriverIterator;
 	private Class<T> _elementType;
+	private int _index = 0;
 	
 	protected PageObjectListIterator(PageObjectList<T> pageObjectList, PageObjectFactory pageObjectFactory, Class<T> elementType) {
 		this._pageObjectList = pageObjectList;
@@ -49,9 +50,11 @@ public class PageObjectListIterator<T extends AbstractPageObject> implements Ite
 	@SuppressWarnings("unchecked")
 	@Override
 	public T next() {
+		_index++;
 		WebElement element = webDriverIterator().next();
 		AbstractPageObject pageObject =  this._pageObjectFactory.createPageObject(_pageObjectList, this._elementType);
 		pageObject.setWebDriverElement(element);
+		pageObject.setName("#" + _index + " item");
 		return (T) pageObject;
 	}
 

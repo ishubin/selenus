@@ -18,6 +18,8 @@ package net.mindengine.selenus.web.objects.form;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.mindengine.selenus.web.objects.PageObjectActionListener;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
@@ -70,33 +72,59 @@ public class FormList extends AbstractFormObject {
 	
 	public void selectByValue(String value) {
 		webDriverSelect().selectByValue(value);
+		PageObjectActionListener listener = findPageObjectActionListener();
+		if ( listener != null ) {
+			listener.selectByValue(this, value);
+		}
 	}
 	
 	public void selectByIndex(int index) {
 		webDriverSelect().selectByIndex(index);
+		PageObjectActionListener listener = findPageObjectActionListener();
+		if ( listener != null ) {
+			listener.selectByIndex(this, index);
+		}
 	}
 	
 	public void selectByText(String text) {
 		webDriverSelect().selectByVisibleText(text);
+		PageObjectActionListener listener = findPageObjectActionListener();
+		if ( listener != null ) {
+			listener.selectByText(this, text);
+		}
 	}
 	
 	public void deselectAll() {
 		webDriverSelect().deselectAll();
+		PageObjectActionListener listener = findPageObjectActionListener();
+		if ( listener != null ) {
+			listener.deselectAll(this);
+		}
 	}
 	
 	public void deselectByIndex(int index) {
 		webDriverSelect().deselectByIndex(index);
+		PageObjectActionListener listener = findPageObjectActionListener();
+		if ( listener != null ) {
+			listener.deselectByIndex(this, index);
+		}
 	}
 	
 	public void deselectByValue(String value) {
 		webDriverSelect().deselectByValue(value);
+		PageObjectActionListener listener = findPageObjectActionListener();
+		if ( listener != null ) {
+			listener.deselectByValue(this, value);
+		}
 	}
 	
 	public void deselectByText(String text) {
 		webDriverSelect().deselectByVisibleText(text);
+		PageObjectActionListener listener = findPageObjectActionListener();
+		if ( listener != null ) {
+			listener.deselectByText(this, text);
+		}
 	}
-	
-	
 	
 	public boolean isMultiple() {
 		return webDriverSelect().isMultiple();

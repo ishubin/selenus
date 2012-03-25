@@ -15,6 +15,8 @@
 ******************************************************************************/
 package net.mindengine.selenus.web.objects.form;
 
+import net.mindengine.selenus.web.objects.PageObjectActionListener;
+
 public class TextField extends AbstractFormObject {
 
 	
@@ -24,6 +26,10 @@ public class TextField extends AbstractFormObject {
 	 */
 	public void typeKeys(String keys) {
 		findWebDriverElement().sendKeys(keys);
+		PageObjectActionListener listener = findPageObjectActionListener();
+		if ( listener != null ) {
+			listener.typeKeys(this, keys);
+		}
 	}
 	
 	/**
@@ -33,6 +39,10 @@ public class TextField extends AbstractFormObject {
 	public void type(String text) {
 		findWebDriverElement().clear();
 		findWebDriverElement().sendKeys(text);
+		PageObjectActionListener listener = findPageObjectActionListener();
+		if ( listener != null ) {
+			listener.type(this, text);
+		}
 	}
 	
 	/**
@@ -40,6 +50,10 @@ public class TextField extends AbstractFormObject {
 	 */
 	public void clear() {
 		findWebDriverElement().clear();
+		PageObjectActionListener listener = findPageObjectActionListener();
+		if ( listener != null ) {
+			listener.clear(this);
+		}
 	}
 	
 	public String getText() {

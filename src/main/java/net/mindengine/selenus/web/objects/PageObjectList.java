@@ -20,6 +20,7 @@ import java.util.List;
 
 import net.mindengine.selenus.exceptions.InvalidPageObjectException;
 import net.mindengine.selenus.web.factory.PageObjectFactory;
+import net.mindengine.selenus.web.verificators.DefaultPageObjectListVerificatorContainer;
 
 import org.openqa.selenium.WebElement;
 /**
@@ -60,6 +61,7 @@ public class PageObjectList<T extends AbstractPageObject> extends WebLayout impl
 		WebElement element = findWebDriverElements().get(index);
 		AbstractPageObject pageObject =  getPageObjectFactory().createPageObject(this, getElementType());
 		pageObject.setWebDriverElement(element);
+		pageObject.setName("#" + (index + 1) + " item");
 		return (T) pageObject;
 	}
 	
@@ -95,5 +97,15 @@ public class PageObjectList<T extends AbstractPageObject> extends WebLayout impl
 	public String getTypeString() {
 		return "list";
 	}
-
+	
+	@Override
+	public DefaultPageObjectListVerificatorContainer verifyThat() {
+		return new DefaultPageObjectListVerificatorContainer(false, this, findVerificatorProvider());
+	}
+	
+	@Override
+	public DefaultPageObjectListVerificatorContainer assertThat() {
+		return new DefaultPageObjectListVerificatorContainer(true, this, findVerificatorProvider());
+	}
+	
 }

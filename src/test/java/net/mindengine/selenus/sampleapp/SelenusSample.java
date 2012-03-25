@@ -24,7 +24,7 @@ public class SelenusSample extends SelenusTest {
 	
 	@Action(name="Check articles")
 	public void checkArticles(@DataSource(dependencies={"browser"}) ArticlesPage articlesPage) {
-		//articlesPage.getArticles().verify().Size().is(3);
+		articlesPage.getArticles().verifyThat().size().is(3);
 		articlesPage.getArticles().get(0).getTitleLabel().verifyThat().text().is("Title 1");
 		articlesPage.getArticles().get(0).getTitleLabel().assertThat().text().is("Title 2");
 	}

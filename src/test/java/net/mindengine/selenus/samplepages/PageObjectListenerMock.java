@@ -6,15 +6,15 @@ import net.mindengine.selenus.web.objects.PageObjectActionListener;
 public class PageObjectListenerMock implements PageObjectActionListener{
 
 	@Override
-	public void onClick(AbstractPageObject pageObject) {
+	public void click(AbstractPageObject pageObject) {
 	}
 
 	@Override
-	public void onDragAndDrop(AbstractPageObject pageObject, AbstractPageObject targetPageObject) {
+	public void dragAndDrop(AbstractPageObject pageObject, AbstractPageObject targetPageObject) {
 	}
 
 	@Override
-	public void onDragAndDropBy(AbstractPageObject pageObject, int xOffset, int yOffset) {
+	public void dragAndDropBy(AbstractPageObject pageObject, int xOffset, int yOffset) {
 	}
 
 	@Override
