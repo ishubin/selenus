@@ -1,10 +1,15 @@
 package net.mindengine.selenus.samplepages;
 
+import net.mindengine.selenus.web.Browser;
 import net.mindengine.selenus.web.objects.AbstractPageObject;
-import net.mindengine.selenus.web.objects.PageObjectActionListener;
+import net.mindengine.selenus.web.objects.SelenusActionListener;
 
-public class PageObjectListenerMock implements PageObjectActionListener{
+public class PageObjectListenerMock implements SelenusActionListener{
 
+	@Override
+	public void openUrl(String url, Browser browser) {
+	}
+	
 	@Override
 	public void click(AbstractPageObject pageObject) {
 	}

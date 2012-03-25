@@ -20,6 +20,7 @@ import java.util.List;
 import net.mindengine.selenus.exceptions.InvalidPageException;
 import net.mindengine.selenus.exceptions.NoWebDriverException;
 import net.mindengine.selenus.web.factory.PageFactory;
+import net.mindengine.selenus.web.objects.SelenusActionListener;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -30,12 +31,17 @@ public class Browser {
 	private WebDriver driver;
 	private String type;
 	private PageFactory pageFactory;
+	private SelenusActionListener selenusActionListener;
 	
 	public Browser () {
 	}
 	
 	public void open(String url) {
 		findDriver().get(url);
+		
+		if ( selenusActionListener != null ) {
+			selenusActionListener.openUrl(url, this);
+		}
 	}
 	
 	public void close() {
@@ -118,6 +124,14 @@ public class Browser {
 		Page page = pageFactory.createPage(pageClass);
 		page.setBrowser(this);
 		return (T) page;
+	}
+
+	public SelenusActionListener getSelenusActionListener() {
+		return selenusActionListener;
+	}
+
+	public void setSelenusActionListener(SelenusActionListener selenusActionListener) {
+		this.selenusActionListener = selenusActionListener;
 	}
 
 }

@@ -21,7 +21,7 @@ import net.mindengine.selenus.samplepages.SamplePage;
 import net.mindengine.selenus.web.factory.DefaultPageFactory;
 import net.mindengine.selenus.web.factory.DefaultPageObjectFactory;
 import net.mindengine.selenus.web.factory.PageFactory;
-import net.mindengine.selenus.web.objects.PageObjectActionListener;
+import net.mindengine.selenus.web.objects.SelenusActionListener;
 import net.mindengine.selenus.web.objects.WebLayout;
 
 import org.junit.Assert;
@@ -56,7 +56,7 @@ public class DefaultPageFactoryTest {
 	
 	@Test
 	public void createsPageWithActionListener() {
-		PageObjectActionListener listener = new PageObjectListenerMock();
+		SelenusActionListener listener = new PageObjectListenerMock();
 		SamplePage page = factory.createPage(SamplePage.class, listener, null);
 		
 		Assert.assertNotNull(page);

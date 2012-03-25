@@ -18,15 +18,16 @@ package net.mindengine.selenus.web.report;
 import net.mindengine.oculus.experior.reporter.MessageBuilder;
 import net.mindengine.oculus.experior.reporter.Report;
 import net.mindengine.oculus.experior.reporter.ReportIcon;
+import net.mindengine.selenus.web.Browser;
 import net.mindengine.selenus.web.objects.AbstractPageObject;
-import net.mindengine.selenus.web.objects.PageObjectActionListener;
+import net.mindengine.selenus.web.objects.SelenusActionListener;
 
 /**
  * Used for reporting of all actions in page object using Oculus reporter
  * @author ishubin
  *
  */
-public class OculusPageObjectActionListener implements PageObjectActionListener {
+public class OculusSelenusActionListener implements SelenusActionListener {
 
 	
 	private static final String CLICK_DEFAULT_MESSAGE = "Click ${fullName}";
@@ -42,9 +43,10 @@ public class OculusPageObjectActionListener implements PageObjectActionListener 
 	private static final String TYPE_KEYS_DEFAULT_MESSAGE = "Type keys \"[string]${keys}[/string]\" in ${fullName}";
 	private static final String TYPE_DEFAULT_MESSAGE = "Type text \"[string]${text}[/string]\" in ${fullName}";
 	private static final String CLEAR_DEFAULT_MESSAGE = "Clear text in ${fullName}";
+	private static final String OPENURL_DEFAULT_MESSAGE = "Open [url]${url}[/url]";
 	private Report report;
 	
-	public OculusPageObjectActionListener(Report report) {
+	public OculusSelenusActionListener(Report report) {
 		setReport(report);
 	}
 	
@@ -55,6 +57,12 @@ public class OculusPageObjectActionListener implements PageObjectActionListener 
 				.put("type", pageObject.getTypeString());
 	}
 	
+	@Override
+	public void openUrl(String url, Browser browser) {
+		if ( report != null ) {
+			report.info(report.message("Selenus.openUrl", OPENURL_DEFAULT_MESSAGE).put("url", url).toString()).icon(ReportIcon.OPEN);
+		}
+	}
 	
 	@Override
 	public void click(AbstractPageObject pageObject) {

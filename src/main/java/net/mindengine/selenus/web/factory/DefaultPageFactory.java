@@ -26,7 +26,7 @@ import net.mindengine.selenus.annotations.Named;
 import net.mindengine.selenus.exceptions.InvalidPageException;
 import net.mindengine.selenus.web.Page;
 import net.mindengine.selenus.web.objects.AbstractPageObject;
-import net.mindengine.selenus.web.objects.PageObjectActionListener;
+import net.mindengine.selenus.web.objects.SelenusActionListener;
 import net.mindengine.selenus.web.objects.PageObjectList;
 import net.mindengine.selenus.web.verificators.VerificatorProvider;
 
@@ -42,7 +42,7 @@ public class DefaultPageFactory extends PageFactory {
 	}
 
 	@Override
-	public <T> T createPage(Class<T> pageClass, PageObjectActionListener pageObjectActionListener, VerificatorProvider verificatorProvider) {
+	public <T> T createPage(Class<T> pageClass, SelenusActionListener pageObjectActionListener, VerificatorProvider verificatorProvider) {
 		try {
 			Constructor<T> constructor = pageClass.getConstructor();
 			T page = constructor.newInstance();

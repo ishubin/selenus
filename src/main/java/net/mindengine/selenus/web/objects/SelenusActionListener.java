@@ -15,7 +15,11 @@
 ******************************************************************************/
 package net.mindengine.selenus.web.objects;
 
-public interface PageObjectActionListener {
+import net.mindengine.selenus.web.Browser;
+
+public interface SelenusActionListener {
+	
+	public void openUrl(String url, Browser browser);
 	
 	public void click(AbstractPageObject pageObject);
 	

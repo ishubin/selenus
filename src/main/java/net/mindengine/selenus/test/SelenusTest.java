@@ -12,8 +12,8 @@ import net.mindengine.selenus.web.Page;
 import net.mindengine.selenus.web.factory.DefaultPageFactory;
 import net.mindengine.selenus.web.factory.DefaultPageObjectFactory;
 import net.mindengine.selenus.web.factory.PageFactory;
-import net.mindengine.selenus.web.objects.PageObjectActionListener;
-import net.mindengine.selenus.web.report.OculusPageObjectActionListener;
+import net.mindengine.selenus.web.objects.SelenusActionListener;
+import net.mindengine.selenus.web.report.OculusSelenusActionListener;
 import net.mindengine.selenus.web.verificators.OculusVerificatorProvider;
 import net.mindengine.selenus.web.verificators.VerificatorProvider;
 
@@ -42,7 +42,7 @@ public class SelenusTest extends OculusTest {
 	public static final String BROWSER = "browser".intern();
 	
 	private PageFactory pageFactory;
-	private PageObjectActionListener pageObjectActionListener;
+	private SelenusActionListener selenusActionListener;
 	private VerificatorProvider verificatorProvider;
 	
 	/**
@@ -51,6 +51,7 @@ public class SelenusTest extends OculusTest {
 	private String defaultBrowserType = FIREFOX;
 	
 	private List<Browser> _usedBrowsers = new LinkedList<Browser>();
+	
 	
 	@Override
 	public void onBeforeTest(TestInformation testInformation) throws Exception {
@@ -65,7 +66,7 @@ public class SelenusTest extends OculusTest {
 		}
 		
 		pageFactory = new DefaultPageFactory(new DefaultPageObjectFactory());
-		pageObjectActionListener = new OculusPageObjectActionListener(getReport());
+		selenusActionListener = new OculusSelenusActionListener(getReport());
 		verificatorProvider = new OculusVerificatorProvider(getReport());
 	}
 	
@@ -84,6 +85,7 @@ public class SelenusTest extends OculusTest {
 		if ( dataSourceInformation.getType() != null && !dataSourceInformation.getType().isEmpty()) {
 			try {
 				Browser browser = new Browser(createWebDriver(dataSourceInformation.getType()));
+				browser.setSelenusActionListener(getSelenusActionListener());
 				_usedBrowsers.add(browser);
 				return browser;
 			}
@@ -99,7 +101,7 @@ public class SelenusTest extends OculusTest {
 	protected Page page(DataSourceInformation dataSourceInformation) {
 		Class<?> pageClass = dataSourceInformation.getObjectType();
 		if ( Page.class.isAssignableFrom(pageClass) ){
-			return (Page) pageFactory.createPage(pageClass, getPageObjectActionListener(), getVerificatorProvider());
+			return (Page) pageFactory.createPage(pageClass, getSelenusActionListener(), getVerificatorProvider());
 		}
 		else throw new IllegalArgumentException("Cannot create page for " + pageClass.getName());
 	}
@@ -140,12 +142,12 @@ public class SelenusTest extends OculusTest {
 		this.pageFactory = pageFactory;
 	}
 
-	public PageObjectActionListener getPageObjectActionListener() {
-		return pageObjectActionListener;
+	public SelenusActionListener getSelenusActionListener() {
+		return selenusActionListener;
 	}
 
-	public void setPageObjectActionListener(PageObjectActionListener pageObjectActionListener) {
-		this.pageObjectActionListener = pageObjectActionListener;
+	public void setSelenusActionListener(SelenusActionListener selenusActionListener) {
+		this.selenusActionListener = selenusActionListener;
 	}
 
 	public VerificatorProvider getVerificatorProvider() {

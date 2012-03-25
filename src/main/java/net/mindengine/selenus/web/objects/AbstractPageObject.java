@@ -36,7 +36,7 @@ public abstract class AbstractPageObject {
 	private By locator;
 	private Page page;
 	private WebLayout parentLayout;
-	private PageObjectActionListener pageObjectActionListener;
+	private SelenusActionListener pageObjectActionListener;
 	private VerificatorProvider verificatorProvider;
 	
 	/**
@@ -60,7 +60,7 @@ public abstract class AbstractPageObject {
 		Actions builder = new Actions(findBrowser().findDriver());
 		builder.dragAndDrop(findWebDriverElement(), target.findWebDriverElement()).build().perform();
 		
-		PageObjectActionListener listener = findPageObjectActionListener();
+		SelenusActionListener listener = findPageObjectActionListener();
 		if ( listener != null ) {
 			listener.dragAndDrop(this, target);
 		}
@@ -71,7 +71,7 @@ public abstract class AbstractPageObject {
 		Actions builder = new Actions(findBrowser().findDriver());
 		builder.dragAndDropBy(findWebDriverElement(), xOffset, yOffset).build().perform();
 		
-		PageObjectActionListener listener = findPageObjectActionListener();
+		SelenusActionListener listener = findPageObjectActionListener();
 		if ( listener != null ) {
 			listener.dragAndDropBy(this, xOffset, yOffset);
 		}
@@ -79,7 +79,7 @@ public abstract class AbstractPageObject {
 	
 	public void click() {
 		findWebDriverElement().click();
-		PageObjectActionListener listener = findPageObjectActionListener();
+		SelenusActionListener listener = findPageObjectActionListener();
 		if ( listener != null ) {
 			listener.click(this);
 		}
@@ -88,7 +88,7 @@ public abstract class AbstractPageObject {
 	public void clickAndWaitFor(AbstractPageObject pageObject) {
 		findWebDriverElement().click();
 		pageObject.waitForItToAppear();
-		PageObjectActionListener listener = findPageObjectActionListener();
+		SelenusActionListener listener = findPageObjectActionListener();
 		if ( listener != null ) {
 			listener.click(this);
 		}
@@ -193,11 +193,11 @@ public abstract class AbstractPageObject {
 		this.parentLayout = parentLayout;
 	}
 
-	public PageObjectActionListener getPageObjectActionListener() {
+	public SelenusActionListener getPageObjectActionListener() {
 		return pageObjectActionListener;
 	}
 
-	public void setPageObjectActionListener(PageObjectActionListener pageObjectActionListener) {
+	public void setPageObjectActionListener(SelenusActionListener pageObjectActionListener) {
 		this.pageObjectActionListener = pageObjectActionListener;
 	}
 	
@@ -282,7 +282,7 @@ public abstract class AbstractPageObject {
 		}
 	}
 	
-	public PageObjectActionListener findPageObjectActionListener() {
+	public SelenusActionListener findPageObjectActionListener() {
 		if ( this.pageObjectActionListener != null ) {
 			return this.pageObjectActionListener;
 		}
