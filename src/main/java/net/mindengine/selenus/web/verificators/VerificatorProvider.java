@@ -18,4 +18,7 @@ public interface VerificatorProvider {
 	SimpleTextCollectionVerificator textCollectionVerificator(AbstractPageObject abstractPageObject, String itemName, Provider<List<String>> realCollectionProvider);
 	
 	<T extends Number> SimpleNumberCollectionVerificator<T> numberCollectionVerificator(AbstractPageObject abstractPageObject, String itemName, Provider<List<T>> realCollectionProvider);
+
+	PageObjectVerificator standardPageObjectVerificator(Provider<AbstractPageObject> provider);
+	
 }

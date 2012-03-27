@@ -17,6 +17,21 @@ public class DefaultPageObjectVerificatorContainer {
 		this.verificatorProvider = verificatorProvider;
 	}
 	
+	public PageObjectVerificator it() {
+		PageObjectVerificator verificator = findVericatorProvider().standardPageObjectVerificator(new Provider<AbstractPageObject>() {
+			@Override
+			public AbstractPageObject provide() {
+				return pageObject;
+			}
+		});
+		
+		if ( assertion ) {
+			return new AssertionPageObjectVerificator(verificator);
+		}
+		else return verificator;
+	}
+	
+	
 	public TextVerificator text() {
 		TextVerificator textVerificator = findVericatorProvider().textVerificator(pageObject, "Text of " + pageObject.getFullName(), new Provider<String>() {
 			@Override

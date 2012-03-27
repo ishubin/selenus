@@ -50,5 +50,9 @@ public class OculusVerificatorProvider implements VerificatorProvider {
 		return new DefaultNumberCollectionVerificator<T>(realCollectionProvider, itemName, report);
 	}
 
+	@Override
+	public PageObjectVerificator standardPageObjectVerificator(Provider<AbstractPageObject> provider) {
+		return new DefaultPageObjectVerificator(provider, report);
+	}
 	
 }

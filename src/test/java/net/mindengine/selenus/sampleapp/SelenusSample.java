@@ -19,6 +19,7 @@ public class SelenusSample extends SelenusTest {
 	public void openArticlesPage(@DataSource(dependencies={"browser"}) MainPage mainPage) {
 		browser.open(SampleAppTest.SAMPLE_APP_URL);
 		mainPage.getHeaderLink().verifyThat().text().is("SELENUS SAMPLE WEBSITE");
+		mainPage.getMenu().getArticlesLink().verifyThat().it().isAvailable();
 		mainPage.getMenu().getArticlesLink().click();
 	}
 	

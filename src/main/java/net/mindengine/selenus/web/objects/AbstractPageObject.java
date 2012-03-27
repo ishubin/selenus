@@ -153,6 +153,15 @@ public abstract class AbstractPageObject {
 		}
 	}
 	
+	public Page searchForPage() {
+		if( parentLayout != null ) {
+			return parentLayout.findPage();
+		}
+		else {
+			return page;
+		}
+	}
+	
 	/**
 	 * Returns HTML tags attribute value
 	 * @param name Name of HTML tag attribute
