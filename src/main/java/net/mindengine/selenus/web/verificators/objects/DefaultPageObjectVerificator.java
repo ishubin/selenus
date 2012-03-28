@@ -1,4 +1,4 @@
-package net.mindengine.selenus.web.verificators;
+package net.mindengine.selenus.web.verificators.objects;
 
 import net.mindengine.oculus.experior.framework.verification.Provider;
 import net.mindengine.oculus.experior.reporter.Report;

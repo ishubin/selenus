@@ -4,6 +4,8 @@ import net.mindengine.oculus.experior.framework.verification.Provider;
 import net.mindengine.oculus.experior.framework.verification.text.AssertionTextVerificator;
 import net.mindengine.oculus.experior.framework.verification.text.TextVerificator;
 import net.mindengine.selenus.web.objects.AbstractPageObject;
+import net.mindengine.selenus.web.verificators.objects.AssertionPageObjectVerificator;
+import net.mindengine.selenus.web.verificators.objects.PageObjectVerificator;
 
 public class DefaultPageObjectVerificatorContainer {
 	protected boolean assertion = false;

@@ -1,4 +1,4 @@
-package net.mindengine.selenus.web.verificators;
+package net.mindengine.selenus.web.verificators.objects;
 
 import net.mindengine.selenus.web.objects.AbstractPageObject;
 

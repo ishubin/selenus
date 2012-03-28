@@ -13,6 +13,8 @@ import net.mindengine.oculus.experior.framework.verification.text.DefaultTextVer
 import net.mindengine.oculus.experior.framework.verification.text.TextVerificator;
 import net.mindengine.oculus.experior.reporter.Report;
 import net.mindengine.selenus.web.objects.AbstractPageObject;
+import net.mindengine.selenus.web.verificators.objects.DefaultPageObjectVerificator;
+import net.mindengine.selenus.web.verificators.objects.PageObjectVerificator;
 
 public class OculusVerificatorProvider implements VerificatorProvider {
 

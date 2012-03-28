@@ -8,6 +8,7 @@ import net.mindengine.oculus.experior.framework.verification.collections.SimpleT
 import net.mindengine.oculus.experior.framework.verification.number.NumberVerificator;
 import net.mindengine.oculus.experior.framework.verification.text.TextVerificator;
 import net.mindengine.selenus.web.objects.AbstractPageObject;
+import net.mindengine.selenus.web.verificators.objects.PageObjectVerificator;
 
 public interface VerificatorProvider {
 
@@ -20,5 +21,6 @@ public interface VerificatorProvider {
 	<T extends Number> SimpleNumberCollectionVerificator<T> numberCollectionVerificator(AbstractPageObject abstractPageObject, String itemName, Provider<List<T>> realCollectionProvider);
 
 	PageObjectVerificator standardPageObjectVerificator(Provider<AbstractPageObject> provider);
+	
 	
 }
