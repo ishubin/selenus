@@ -17,13 +17,14 @@ package net.mindengine.selenus.web.objects.form;
 
 import net.mindengine.selenus.web.objects.AbstractPageObject;
 
-public abstract class AbstractFormObject extends AbstractPageObject {
+public abstract class AbstractFormObject extends AbstractPageObject implements FormElement {
 
 
 	public String getValue() {
 		return getTagAttribute("value");
 	}
 	
+	@Override
 	public boolean isEnabled() {
 		return findWebDriverElement().isEnabled();
 	}

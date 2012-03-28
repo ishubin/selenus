@@ -10,4 +10,10 @@ public interface PageObjectVerificator {
 	public boolean isNotAvailable();
 	public boolean isDisplayed();
 	public boolean isNotDisplayed();
+	
+	public boolean isEnabled();
+	public boolean isDisabled();
+	public boolean isChecked();
+	public boolean isUnchecked();
+	
 }

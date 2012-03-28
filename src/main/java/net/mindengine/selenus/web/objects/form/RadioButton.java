@@ -15,10 +15,15 @@
 ******************************************************************************/
 package net.mindengine.selenus.web.objects.form;
 
-public class RadioButton extends AbstractFormObject {
+public class RadioButton extends AbstractFormObject implements FormSelectable {
 
 	@Override
 	public String getTypeString() {
 		return "radio-button";
+	}
+	
+	@Override
+	public boolean isChecked() {
+		return findWebDriverElement().isSelected();
 	}
 }

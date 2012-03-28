@@ -47,4 +47,40 @@ public class AssertionPageObjectVerificator implements PageObjectVerificator {
 		}
 		return true;
 	}
+
+
+	@Override
+	public boolean isEnabled() {
+		if ( !verificator.isEnabled() ) {
+			throw new AssertionError(findPageObject().getFullName() + " is disabled");
+		}
+		return true;
+	}
+
+
+	@Override
+	public boolean isDisabled() {
+		if ( !verificator.isDisabled() ) {
+			throw new AssertionError(findPageObject().getFullName() + " is enabled");
+		}
+		return true;
+	}
+
+
+	@Override
+	public boolean isChecked() {
+		if ( !verificator.isChecked() ) {
+			throw new AssertionError(findPageObject().getFullName() + " is unchecked");
+		}
+		return true;
+	}
+
+
+	@Override
+	public boolean isUnchecked() {
+		if ( !verificator.isUnchecked() ) {
+			throw new AssertionError(findPageObject().getFullName() + " is checked");
+		}
+		return true;
+	}
 }

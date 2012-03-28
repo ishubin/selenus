@@ -19,9 +19,9 @@ import net.mindengine.selenus.web.objects.SelenusActionListener;
 
 import org.openqa.selenium.WebElement;
 
-public class Checkbox extends AbstractFormObject {
+public class Checkbox extends AbstractFormObject implements FormSelectable {
 
-	
+	@Override
 	public boolean isChecked() {
 		return findWebDriverElement().isSelected();
 	}
@@ -47,8 +47,6 @@ public class Checkbox extends AbstractFormObject {
 			}
 		}
 	}
-	
-	
 	
 	@Override
 	public String getTypeString() {
