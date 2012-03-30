@@ -1,5 +1,6 @@
 package net.mindengine.selenus.web.verificators.objects;
 
+import net.mindengine.selenus.exceptions.SelenusAssertionError;
 import net.mindengine.selenus.web.objects.AbstractPageObject;
 
 public class AssertionPageObjectVerificator implements PageObjectVerificator {
@@ -19,7 +20,7 @@ public class AssertionPageObjectVerificator implements PageObjectVerificator {
 	@Override
 	public boolean isAvailable() {
 		if ( !verificator.isAvailable() ) {
-			throw new AssertionError(findPageObject().getFullName() + " is not available");
+			throw new SelenusAssertionError(findPageObject().getFullName() + " is not available");
 		}
 		return true;
 	}
@@ -27,7 +28,7 @@ public class AssertionPageObjectVerificator implements PageObjectVerificator {
 	@Override
 	public boolean isNotAvailable() {
 		if ( !verificator.isNotAvailable() ) {
-			throw new AssertionError(findPageObject().getFullName() + " is available");
+			throw new SelenusAssertionError(findPageObject().getFullName() + " is available");
 		}
 		return true;
 	}
@@ -35,7 +36,7 @@ public class AssertionPageObjectVerificator implements PageObjectVerificator {
 	@Override
 	public boolean isDisplayed() {
 		if ( !verificator.isDisplayed() ) {
-			throw new AssertionError(findPageObject().getFullName() + " is not visible");
+			throw new SelenusAssertionError(findPageObject().getFullName() + " is not visible");
 		}
 		return true;
 	}
@@ -43,7 +44,7 @@ public class AssertionPageObjectVerificator implements PageObjectVerificator {
 	@Override
 	public boolean isNotDisplayed() {
 		if ( !verificator.isNotDisplayed() ) {
-			throw new AssertionError(findPageObject().getFullName() + " is visible");
+			throw new SelenusAssertionError(findPageObject().getFullName() + " is visible");
 		}
 		return true;
 	}
@@ -52,7 +53,7 @@ public class AssertionPageObjectVerificator implements PageObjectVerificator {
 	@Override
 	public boolean isEnabled() {
 		if ( !verificator.isEnabled() ) {
-			throw new AssertionError(findPageObject().getFullName() + " is disabled");
+			throw new SelenusAssertionError(findPageObject().getFullName() + " is disabled");
 		}
 		return true;
 	}
@@ -61,7 +62,7 @@ public class AssertionPageObjectVerificator implements PageObjectVerificator {
 	@Override
 	public boolean isDisabled() {
 		if ( !verificator.isDisabled() ) {
-			throw new AssertionError(findPageObject().getFullName() + " is enabled");
+			throw new SelenusAssertionError(findPageObject().getFullName() + " is enabled");
 		}
 		return true;
 	}
@@ -70,7 +71,7 @@ public class AssertionPageObjectVerificator implements PageObjectVerificator {
 	@Override
 	public boolean isChecked() {
 		if ( !verificator.isChecked() ) {
-			throw new AssertionError(findPageObject().getFullName() + " is unchecked");
+			throw new SelenusAssertionError(findPageObject().getFullName() + " is unchecked");
 		}
 		return true;
 	}
@@ -79,7 +80,7 @@ public class AssertionPageObjectVerificator implements PageObjectVerificator {
 	@Override
 	public boolean isUnchecked() {
 		if ( !verificator.isUnchecked() ) {
-			throw new AssertionError(findPageObject().getFullName() + " is checked");
+			throw new SelenusAssertionError(findPageObject().getFullName() + " is checked");
 		}
 		return true;
 	}

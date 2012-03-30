@@ -1,12 +1,18 @@
 package net.mindengine.selenus.test;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
 import net.mindengine.oculus.experior.annotations.DataProvider;
+import net.mindengine.oculus.experior.annotations.events.OnException;
+import net.mindengine.oculus.experior.framework.report.OculusReportFileUploader;
 import net.mindengine.oculus.experior.framework.test.OculusTest;
+import net.mindengine.oculus.experior.reporter.ReportDesign;
+import net.mindengine.oculus.experior.reporter.ReportIcon;
 import net.mindengine.oculus.experior.test.descriptors.TestInformation;
 import net.mindengine.oculus.experior.test.resolvers.dataprovider.DataSourceInformation;
+import net.mindengine.selenus.exceptions.SelenusException;
 import net.mindengine.selenus.web.Browser;
 import net.mindengine.selenus.web.Page;
 import net.mindengine.selenus.web.factory.DefaultPageFactory;
@@ -24,6 +30,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.iphone.IPhoneDriver;
+
+import com.thoughtworks.selenium.SeleniumException;
 
 /**
  * Base test for easier use of selenus with oculus reporter.
@@ -53,6 +61,28 @@ public class SelenusTest extends OculusTest {
 	private List<Browser> _usedBrowsers = new LinkedList<Browser>();
 	
 	
+	public void takeScreenshotOfAllBrowsers() {
+		for ( Browser browser : _usedBrowsers ) {
+			takeScreenshot(browser);
+		}
+	}
+	
+	public void takeScreenshot(Browser browser) {
+		File screenShotFile = browser.takeScreenshot();
+		OculusReportFileUploader uploader = OculusReportFileUploader.getStandardFileUploader();
+		
+		try {
+			String fileId = uploader.upload(screenShotFile);
+			String browserName = browser.getType();
+			if ( browser.getName() != null ) {
+				browserName = browser.getName() + " " + browserName;
+			}
+			report.info("Screenshot in " + ReportDesign.bold(browserName) + " browser").icon(ReportIcon.INFO).details(ReportDesign.screenshot(fileId));
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	@Override
 	public void onBeforeTest(TestInformation testInformation) throws Exception {
 		super.onBeforeTest(testInformation);
@@ -71,6 +101,11 @@ public class SelenusTest extends OculusTest {
 	}
 	
 	
+	@OnException({SelenusException.class, AssertionError.class, SeleniumException.class})
+	protected void takeScreenshotsOnError() {
+		takeScreenshotOfAllBrowsers();
+	}
+	
 	@Override
 	public void onAfterTest(TestInformation testInformation) throws Exception {
 		super.onAfterTest(testInformation);
@@ -84,8 +119,18 @@ public class SelenusTest extends OculusTest {
 	protected Browser browser(DataSourceInformation dataSourceInformation) {
 		if ( dataSourceInformation.getType() != null && !dataSourceInformation.getType().isEmpty()) {
 			try {
+				
+				String browserType = dataSourceInformation.getType();
+				if ( browserType == null || browserType.isEmpty() ) {
+					browserType = getSuiteParameter(BROWSER);
+				}
+				if ( browserType == null || browserType.isEmpty() ) {
+					browserType = getDefaultBrowserType();
+				}
+				
 				Browser browser = new Browser(createWebDriver(dataSourceInformation.getType()));
 				browser.setSelenusActionListener(getSelenusActionListener());
+				browser.setType(browserType);
 				_usedBrowsers.add(browser);
 				return browser;
 			}

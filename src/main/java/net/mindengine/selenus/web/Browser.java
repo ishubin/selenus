@@ -15,6 +15,7 @@
 ******************************************************************************/
 package net.mindengine.selenus.web;
 
+import java.io.File;
 import java.util.List;
 
 import net.mindengine.selenus.exceptions.InvalidPageException;
@@ -23,6 +24,8 @@ import net.mindengine.selenus.web.factory.PageFactory;
 import net.mindengine.selenus.web.objects.SelenusActionListener;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -132,6 +135,14 @@ public class Browser {
 
 	public void setSelenusActionListener(SelenusActionListener selenusActionListener) {
 		this.selenusActionListener = selenusActionListener;
+	}
+
+	/**
+	 * Takes screenshot of a browser in PNG format
+	 * @return
+	 */
+	public File takeScreenshot() {
+		return ((TakesScreenshot)findDriver()).getScreenshotAs(OutputType.FILE);
 	}
 
 }

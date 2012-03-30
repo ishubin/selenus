@@ -15,16 +15,14 @@
 ******************************************************************************/
 package net.mindengine.selenus.web.objects.form;
 
-import java.io.File;
-
 import org.openqa.selenium.WebElement;
 
 public class FileUpload extends AbstractFormObject {
 
-	public void setFile(File file) {
+	public void setFile(String filePath) {
 		WebElement webElement = findWebDriverElement();
 		webElement.clear();
-		webElement.sendKeys(file.getAbsolutePath());
+		webElement.sendKeys(filePath);
 	}
 	
 	@Override

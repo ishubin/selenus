@@ -3,6 +3,6 @@
 
 	<parameter name="browser" value="firefox"/>
 	
-	<test id="1" name="Custom test group" mapping="net.mindengine.selenus.sampleapp.SelenusSample">
+	<test id="1" name="Selenus sample test" mapping="net.mindengine.selenus.sampleapp.SelenusSample">
     </test>
 </suite>
