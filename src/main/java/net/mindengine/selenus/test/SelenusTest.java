@@ -131,6 +131,7 @@ public class SelenusTest extends OculusTest {
 				Browser browser = new Browser(createWebDriver(dataSourceInformation.getType()));
 				browser.setSelenusActionListener(getSelenusActionListener());
 				browser.setType(browserType);
+				browser.setName(dataSourceInformation.getName());
 				_usedBrowsers.add(browser);
 				return browser;
 			}

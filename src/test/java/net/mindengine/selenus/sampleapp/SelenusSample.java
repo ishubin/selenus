@@ -12,7 +12,7 @@ import net.mindengine.selenus.web.Browser;
 @Test(name="Selenus Sample test", project="SELENUS-SAMPLE-WEBSITE")
 public class SelenusSample extends SelenusTest {
 
-	@DataSource(provider="browser", type="firefox")
+	@DataSource(provider="browser", type="firefox", name="Browser1")
 	protected Browser browser;
 	
 	@Action(name="Open Home page", next="checkArticles")
