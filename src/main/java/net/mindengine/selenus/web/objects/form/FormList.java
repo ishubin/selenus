@@ -19,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.mindengine.selenus.web.objects.SelenusActionListener;
+import net.mindengine.selenus.web.verificators.DefaultFormListVerificatorContainer;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -138,6 +139,16 @@ public class FormList extends AbstractFormObject {
 	@Override
 	public String getTypeString() {
 		return "list";
+	}
+	
+	@Override
+	public DefaultFormListVerificatorContainer verifyThat() {
+		return new DefaultFormListVerificatorContainer(false, this, findVerificatorProvider());
+	}
+	
+	@Override
+	public DefaultFormListVerificatorContainer assertThat() {
+		return new DefaultFormListVerificatorContainer(true, this, findVerificatorProvider());
 	}
 
 }
