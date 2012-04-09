@@ -17,10 +17,13 @@ package net.mindengine.selenus.web.report;
 
 import net.mindengine.oculus.experior.reporter.MessageBuilder;
 import net.mindengine.oculus.experior.reporter.Report;
+import net.mindengine.oculus.experior.reporter.ReportDesign;
 import net.mindengine.oculus.experior.reporter.ReportIcon;
 import net.mindengine.selenus.web.Browser;
 import net.mindengine.selenus.web.objects.AbstractPageObject;
 import net.mindengine.selenus.web.objects.SelenusActionListener;
+
+import org.openqa.selenium.By;
 
 /**
  * Used for reporting of all actions in page object using Oculus reporter
@@ -57,6 +60,23 @@ public class OculusSelenusActionListener implements SelenusActionListener {
 				.put("type", pageObject.getTypeString());
 	}
 	
+	protected String locatorToString(By by) {
+	    if ( by != null ) {
+	        return by.toString();
+	    }
+	    else {
+	        return "Unknown locator";
+	    }
+	}
+	
+	protected String findFullLocator(AbstractPageObject pageObject) {
+	    String locator = ReportDesign.locator(locatorToString(pageObject.getLocator()));
+	    if ( pageObject.getParentLayout() != null  ) {
+	        locator = findFullLocator(pageObject.getParentLayout()) + " > " + locator;
+	    }
+	    return locator;
+	}
+	
 	@Override
 	public void openUrl(String url, Browser browser) {
 		if ( report != null ) {
@@ -67,7 +87,7 @@ public class OculusSelenusActionListener implements SelenusActionListener {
 	@Override
 	public void click(AbstractPageObject pageObject) {
 		if ( report != null ) {
-			report.info(msg("click", CLICK_DEFAULT_MESSAGE, pageObject).toString()).icon(ReportIcon.UI_CLICK);
+			report.info(msg("click", CLICK_DEFAULT_MESSAGE, pageObject).toString()).icon(ReportIcon.UI_CLICK).details(findFullLocator(pageObject));
 		}
 	}
 
@@ -78,7 +98,7 @@ public class OculusSelenusActionListener implements SelenusActionListener {
 					.put("targetName", targetPageObject.getName())
 					.put("targetType", targetPageObject.getTypeString())
 					.put("targetFullName", targetPageObject.getFullName())
-					.toString()).icon(ReportIcon.UI_CLICK);
+					.toString()).icon(ReportIcon.UI_CLICK).details("pageObject: " + findFullLocator(pageObject) + ReportDesign.breakline() + "target: " +findFullLocator(targetPageObject));
 		}
 
 	}
@@ -89,77 +109,77 @@ public class OculusSelenusActionListener implements SelenusActionListener {
 			report.info(msg("dragAndDropBy", DRAG_AND_DROP_BY_DEFAULT_MESSAGE, pageObject)
 					.put("xOffset", xOffset)
 					.put("yOffset", yOffset)
-					.toString()).icon(ReportIcon.UI_CLICK);
+					.toString()).icon(ReportIcon.UI_CLICK).details(findFullLocator(pageObject));
 		}
 	}
 
 	@Override
 	public void selectByValue(AbstractPageObject pageObject, String value) {
 		if ( report != null ) {
-			report.info(msg("selectByValue", SELECT_BY_VALUE_DEFAULT_MESSAGE, pageObject).put("value", value).toString()).icon(ReportIcon.UI_CLICK);
+			report.info(msg("selectByValue", SELECT_BY_VALUE_DEFAULT_MESSAGE, pageObject).put("value", value).toString()).icon(ReportIcon.UI_CLICK).details(findFullLocator(pageObject));
 		}
 	}
 
 	@Override
 	public void selectByIndex(AbstractPageObject pageObject, int index) {
 		if ( report != null ) {
-			report.info(msg("selectByIndex", SELECT_BY_INDEX_DEFAULT_MESSAGE, pageObject).put("index", index).toString()).icon(ReportIcon.UI_CLICK);
+			report.info(msg("selectByIndex", SELECT_BY_INDEX_DEFAULT_MESSAGE, pageObject).put("index", index).toString()).icon(ReportIcon.UI_CLICK).details(findFullLocator(pageObject));
 		}
 	}
 
 	@Override
 	public void selectByText(AbstractPageObject pageObject, String text) {
 		if ( report != null ) {
-			report.info(msg("selectByText", SELECT_BY_TEXT_DEFAULT_MESSAGE, pageObject).put("text", text).toString()).icon(ReportIcon.UI_CLICK);
+			report.info(msg("selectByText", SELECT_BY_TEXT_DEFAULT_MESSAGE, pageObject).put("text", text).toString()).icon(ReportIcon.UI_CLICK).details(findFullLocator(pageObject));
 		}
 	}
 
 	@Override
 	public void deselectAll(AbstractPageObject pageObject) {
 		if ( report != null ) {
-			report.info(msg("deselectAll", DESELECT_ALL_DEFAULT_MESSAGE, pageObject).toString()).icon(ReportIcon.UI_CLICK);
+			report.info(msg("deselectAll", DESELECT_ALL_DEFAULT_MESSAGE, pageObject).toString()).icon(ReportIcon.UI_CLICK).details(findFullLocator(pageObject));
 		}
 	}
 
 	@Override
 	public void deselectByIndex(AbstractPageObject pageObject, int index) {
 		if ( report != null ) {
-			report.info(msg("deselectByIndex", DESELECT_BY_INDEX_DEFAULT_MESSAGE, pageObject).put("index", index).toString()).icon(ReportIcon.UI_CLICK);
+			report.info(msg("deselectByIndex", DESELECT_BY_INDEX_DEFAULT_MESSAGE, pageObject).put("index", index).toString()).icon(ReportIcon.UI_CLICK).details(findFullLocator(pageObject));
 		}
 	}
 
 	@Override
 	public void deselectByValue(AbstractPageObject pageObject, String value) {
 		if ( report != null ) {
-			report.info(msg("deselectByValue", DESELECT_BY_VALUE_DEFAULT_MESSAGE, pageObject).put("value", value).toString()).icon(ReportIcon.UI_CLICK);
+			report.info(msg("deselectByValue", DESELECT_BY_VALUE_DEFAULT_MESSAGE, pageObject).put("value", value).toString()).icon(ReportIcon.UI_CLICK).details(findFullLocator(pageObject));
 		}
 	}
 
 	@Override
 	public void deselectByText(AbstractPageObject pageObject, String text) {
 		if ( report != null ) {
-			report.info(msg("deselectByText", DESELECT_BY_TEXT_DEFAULT_MESSAGE, pageObject).put("text", text).toString()).icon(ReportIcon.UI_CLICK);
+			report.info(msg("deselectByText", DESELECT_BY_TEXT_DEFAULT_MESSAGE, pageObject).put("text", text).toString()).icon(ReportIcon.UI_CLICK).details(findFullLocator(pageObject));
 		}
 	}
 
 	@Override
 	public void typeKeys(AbstractPageObject pageObject, String keys) {
 		if ( report != null ) {
-			report.info(msg("typeKeys", TYPE_KEYS_DEFAULT_MESSAGE, pageObject).put("keys", keys).toString()).icon(ReportIcon.UI_TYPE);
+			report.info(msg("typeKeys", TYPE_KEYS_DEFAULT_MESSAGE, pageObject).put("keys", keys).toString()).icon(ReportIcon.UI_TYPE).details(findFullLocator(pageObject));
 		}
 	}
 
 	@Override
 	public void type(AbstractPageObject pageObject, String text) {
 		if ( report != null ) {
-			report.info(msg("type", TYPE_DEFAULT_MESSAGE, pageObject).put("text", text).toString()).icon(ReportIcon.UI_TYPE);
+			report.info(msg("type", TYPE_DEFAULT_MESSAGE, pageObject).put("text", text).toString()).icon(ReportIcon.UI_TYPE).details(findFullLocator(pageObject));
 		}
 	}
 
 	@Override
 	public void clear(AbstractPageObject pageObject) {
 		if ( report != null ) {
-			report.info(msg("clear", CLEAR_DEFAULT_MESSAGE, pageObject).toString()).icon(ReportIcon.UI_TYPE);
+			report.info(msg("clear", CLEAR_DEFAULT_MESSAGE, pageObject).toString()).icon(ReportIcon.UI_TYPE).details(findFullLocator(pageObject));
 		}
 	}
 

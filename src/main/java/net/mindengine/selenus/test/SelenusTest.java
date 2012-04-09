@@ -77,7 +77,7 @@ public class SelenusTest extends OculusTest {
 			if ( browser.getName() != null ) {
 				browserName = browser.getName() + " " + browserName;
 			}
-			report.info("Screenshot in " + ReportDesign.bold(browserName) + " browser").icon(ReportIcon.INFO).details(ReportDesign.screenshot(fileId));
+			report.info("Screenshot in " + ReportDesign.bold(browserName) + " browser").icon(ReportIcon.SCREENSHOT).details(ReportDesign.screenshot(fileId));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
