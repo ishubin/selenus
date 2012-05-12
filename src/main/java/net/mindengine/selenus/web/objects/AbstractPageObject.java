@@ -39,6 +39,8 @@ public abstract class AbstractPageObject {
 	private SelenusActionListener pageObjectActionListener;
 	private VerificatorProvider verificatorProvider;
 	
+	private Boolean useCache = false;
+	
 	/**
 	 * Used in findWebDriverElement method so it is instantiated only once
 	 */
@@ -122,10 +124,15 @@ public abstract class AbstractPageObject {
 	 * @return web-element of WebDriver which corresponds to this page object
 	 */
 	public synchronized WebElement findWebDriverElement() {
-		if ( _webDriverElement == null) {
-			_webDriverElement = instantiateWebDriverElement();
-		}
-		return _webDriverElement;
+	    if ( _webDriverElement != null ) {
+	        return _webDriverElement;
+	    }
+	    
+	    WebElement webElement = instantiateWebDriverElement();
+	    if ( getUseCache() ) {
+	        this._webDriverElement = webElement;
+	    }
+	    return webElement;
 	}
 	
 	private WebElement instantiateWebDriverElement() {
@@ -300,5 +307,13 @@ public abstract class AbstractPageObject {
 		}
 		return null;
 	}
+
+    public Boolean getUseCache() {
+        return useCache;
+    }
+
+    public void setUseCache(Boolean useCache) {
+        this.useCache = useCache;
+    }
 	
 }
