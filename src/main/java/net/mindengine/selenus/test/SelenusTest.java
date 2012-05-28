@@ -109,10 +109,17 @@ public class SelenusTest extends OculusTest {
 				}
 			}
 		}
+		if ( pageFactory == null ) {
+		    pageFactory = new DefaultPageFactory(new DefaultPageObjectFactory());
+		}
 		
-		pageFactory = new DefaultPageFactory(new DefaultPageObjectFactory());
-		selenusActionListener = new OculusSelenusActionListener(getReport());
-		verificatorProvider = new OculusVerificatorProvider(getReport());
+		if ( selenusActionListener == null ) {
+		    selenusActionListener = new OculusSelenusActionListener(getReport());
+		}
+		
+		if ( verificatorProvider == null ) {
+		    verificatorProvider = new OculusVerificatorProvider(getReport());
+		}
 	}
 	
 	
