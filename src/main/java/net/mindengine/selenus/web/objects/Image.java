@@ -22,7 +22,7 @@ public class Image extends AbstractPageObject {
 	}
 
 	@Override
-	public String getTypeString() {
+	public String getType() {
 		return "image";
 	}
 

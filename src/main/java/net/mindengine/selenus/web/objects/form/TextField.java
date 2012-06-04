@@ -61,7 +61,7 @@ public class TextField extends AbstractFormObject {
 	}
 	
 	@Override
-	public String getTypeString() {
+	public String getType() {
 		return "text-field";
 	}
 

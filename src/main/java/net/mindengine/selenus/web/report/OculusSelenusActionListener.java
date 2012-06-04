@@ -33,20 +33,20 @@ import org.openqa.selenium.By;
 public class OculusSelenusActionListener implements SelenusActionListener {
 
 	
-	private static final String CLICK_DEFAULT_MESSAGE = "Click ${fullName}";
-	private static final String DRAG_AND_DROP_DEFAULT_MESSAGE = "Drag ${fullName} and drop it on ${targetFullName}";
-	private static final String DRAG_AND_DROP_BY_DEFAULT_MESSAGE = "Drag ${fullName} and drop it by [${xOffset}, ${yOffset}] offset";
-	private static final String SELECT_BY_VALUE_DEFAULT_MESSAGE = "Select value \"[string]${value}[/string]\" in ${fullName}";
-	private static final String SELECT_BY_INDEX_DEFAULT_MESSAGE = "Select #${index} option in ${fullName}";
-	private static final String SELECT_BY_TEXT_DEFAULT_MESSAGE = "Select option \"[string]${text}[/string]\" in ${fullName}";
+	private static final String CLICK_DEFAULT_MESSAGE = "Click ${pageObject.fullName}";
+	private static final String DRAG_AND_DROP_DEFAULT_MESSAGE = "Drag ${pageObject.fullName} and drop it on ${targetPageObject.fullName}";
+	private static final String DRAG_AND_DROP_BY_DEFAULT_MESSAGE = "Drag ${pageObject.fullName} and drop it by [${xOffset}, ${yOffset}] offset";
+	private static final String SELECT_BY_VALUE_DEFAULT_MESSAGE = "Select value \"[string]${value}[/string]\" in ${pageObject.fullName}";
+	private static final String SELECT_BY_INDEX_DEFAULT_MESSAGE = "Select #${index} option in ${pageObject.fullName}";
+	private static final String SELECT_BY_TEXT_DEFAULT_MESSAGE = "Select option \"[string]${text}[/string]\" in ${pageObject.fullName}";
 	private static final String DESELECT_ALL_DEFAULT_MESSAGE = "Remove selection from all options in ${fullName}";
-	private static final String DESELECT_BY_INDEX_DEFAULT_MESSAGE = "Remove selection for #${index} option in ${fullName}";
-	private static final String DESELECT_BY_VALUE_DEFAULT_MESSAGE = "Remove selection for value \"[string]${value}[/string]\" in ${fullName}";
-	private static final String DESELECT_BY_TEXT_DEFAULT_MESSAGE = "Remove selection for option \"[string]${text}[/string]\" in ${fullName}";
-	private static final String TYPE_KEYS_DEFAULT_MESSAGE = "Type keys \"[string]${keys}[/string]\" in ${fullName}";
-	private static final String TYPE_DEFAULT_MESSAGE = "Type text \"[string]${text}[/string]\" in ${fullName}";
-	private static final String CLEAR_DEFAULT_MESSAGE = "Clear text in ${fullName}";
-	private static final String OPENURL_DEFAULT_MESSAGE = "Open [url]${url}[/url]";
+	private static final String DESELECT_BY_INDEX_DEFAULT_MESSAGE = "Remove selection for #${index} option in ${pageObject.fullName}";
+	private static final String DESELECT_BY_VALUE_DEFAULT_MESSAGE = "Remove selection for value \"[string]${value}[/string]\" in ${pageObject.fullName}";
+	private static final String DESELECT_BY_TEXT_DEFAULT_MESSAGE = "Remove selection for option \"[string]${text}[/string]\" in ${pageObject.fullName}";
+	private static final String TYPE_KEYS_DEFAULT_MESSAGE = "Type keys \"[string]${keys}[/string]\" in ${pageObject.fullName}";
+	private static final String TYPE_DEFAULT_MESSAGE = "Type text \"[string]${text}[/string]\" in ${pageObject.fullName}";
+	private static final String CLEAR_DEFAULT_MESSAGE = "Clear text in ${pageObject.fullName}";
+	private static final String OPENURL_DEFAULT_MESSAGE = "Open [url]${url}[/url] in \"[string]${browser.name}[/string]\" [b]${browser.type}[/b] browser";
 	private Report report;
 	
 	public OculusSelenusActionListener(Report report) {
@@ -55,9 +55,7 @@ public class OculusSelenusActionListener implements SelenusActionListener {
 	
 	private MessageBuilder msg(String method, String defaultMessage, AbstractPageObject pageObject) {
 		return report.message("Selenus." + method, defaultMessage)
-				.put("name", pageObject.getName())
-				.put("fullName", pageObject.getFullName())
-				.put("type", pageObject.getTypeString());
+				.put("pageObject", pageObject);
 	}
 	
 	protected String locatorToString(By by) {
@@ -80,7 +78,7 @@ public class OculusSelenusActionListener implements SelenusActionListener {
 	@Override
 	public void openUrl(String url, Browser browser) {
 		if ( report != null ) {
-			report.info(report.message("Selenus.openUrl", OPENURL_DEFAULT_MESSAGE).put("url", url).toString()).icon(ReportIcon.OPEN);
+			report.info(report.message("Selenus.openUrl", OPENURL_DEFAULT_MESSAGE).put("url", url).put("browser", browser).toString()).icon(ReportIcon.OPEN);
 		}
 	}
 	
@@ -95,9 +93,7 @@ public class OculusSelenusActionListener implements SelenusActionListener {
 	public void dragAndDrop(AbstractPageObject pageObject, AbstractPageObject targetPageObject) {
 		if ( report != null ) {
 			report.info(msg("dragAndDrop", DRAG_AND_DROP_DEFAULT_MESSAGE, pageObject)
-					.put("targetName", targetPageObject.getName())
-					.put("targetType", targetPageObject.getTypeString())
-					.put("targetFullName", targetPageObject.getFullName())
+					.put("targetPageObject", targetPageObject)
 					.toString()).icon(ReportIcon.UI_CLICK).details("pageObject: " + findFullLocator(pageObject) + ReportDesign.breakline() + "target: " +findFullLocator(targetPageObject));
 		}
 

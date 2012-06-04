@@ -26,7 +26,7 @@ public class FileUpload extends AbstractFormObject {
 	}
 	
 	@Override
-	public String getTypeString() {
+	public String getType() {
 		return "file upload";
 	}
 

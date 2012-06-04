@@ -49,7 +49,7 @@ public class Checkbox extends AbstractFormObject implements FormSelectable {
 	}
 	
 	@Override
-	public String getTypeString() {
+	public String getType() {
 		return "checkbox";
 	}
 

@@ -94,7 +94,7 @@ public class PageObjectList<T extends AbstractPageObject> extends WebLayout impl
 	}
 
 	@Override
-	public String getTypeString() {
+	public String getType() {
 		return "list";
 	}
 	

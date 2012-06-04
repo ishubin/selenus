@@ -58,15 +58,6 @@ public class Page {
 		return browser().getCurrentUrl();
 	}
 
-	public boolean verifyPage() {
-		//TODO verifyPage method
-		return false;
-	}
-	
-	public void assertPage() {
-		//TODO assertPage method
-	}
-
 	public String getName() {
 		return name;
 	}

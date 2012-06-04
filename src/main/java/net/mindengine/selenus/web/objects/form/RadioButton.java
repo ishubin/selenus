@@ -18,7 +18,7 @@ package net.mindengine.selenus.web.objects.form;
 public class RadioButton extends AbstractFormObject implements FormSelectable {
 
 	@Override
-	public String getTypeString() {
+	public String getType() {
 		return "radio-button";
 	}
 	

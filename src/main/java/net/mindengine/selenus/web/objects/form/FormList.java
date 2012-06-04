@@ -137,7 +137,7 @@ public class FormList extends AbstractFormObject {
 	
 	
 	@Override
-	public String getTypeString() {
+	public String getType() {
 		return "list";
 	}
 	

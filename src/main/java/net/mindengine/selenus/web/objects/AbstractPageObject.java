@@ -182,7 +182,7 @@ public abstract class AbstractPageObject {
 	 * Return type of the page object which can be later used in reporting
 	 * @return
 	 */
-	public abstract String getTypeString();
+	public abstract String getType();
 	
 	public String getName() {
 		return name;
@@ -253,7 +253,7 @@ public abstract class AbstractPageObject {
 		else { 
 			builder.append("Unknown");
 		}
-		builder.append(this.getTypeString());
+		builder.append(this.getType());
 		if ( this.parentLayout != null ) {
 			builder.append(" in ").append(this.getParentLayout().getFullName());
 		}
@@ -266,7 +266,7 @@ public abstract class AbstractPageObject {
 		if ( name != null) {
 			text.append("\"").append(name).append("\" ");
 		}
-		text.append(this.getTypeString());
+		text.append(this.getType());
 		return super.toString();
 	}
 	

@@ -18,7 +18,6 @@ package net.mindengine.selenus.web.verificators.objects;
 import net.mindengine.oculus.experior.framework.verification.Provider;
 import net.mindengine.oculus.experior.reporter.Report;
 import net.mindengine.oculus.experior.reporter.ReportIcon;
-import net.mindengine.selenus.web.Page;
 import net.mindengine.selenus.web.objects.AbstractPageObject;
 import net.mindengine.selenus.web.objects.form.FormElement;
 import net.mindengine.selenus.web.objects.form.FormSelectable;
@@ -27,22 +26,22 @@ public class DefaultPageObjectVerificator implements PageObjectVerificator {
 
 	private static final String SELENUS_PAGE_OBJECT_VERIFICATOR = "Selenus.PageObjectVerificator";
 	
-	private static final String DEFAULT_IS_AVALIABLE_PASS = "${fullName} is available as expected on [b]${page.name}[/b] page";
-	private static final String DEFAULT_IS_AVALIABLE_FAIL = "${fullName} is not available on [b]${page.name}[/b] page";
-	private static final String DEFAULT_IS_NOT_AVALIABLE_PASS = "${fullName} is not available as expected on [b]${page.name}[/b] page";
-	private static final String DEFAULT_IS_NOT_AVALIABLE_FAIL = "${fullName} is available but it is not expected on [b]${page.name}[/b] page";
-	private static final String DEFAULT_IS_DISPLAYED_PASS = "${fullName} is displayed as expected on [b]${page.name}[/b] page";
-	private static final String DEFAULT_IS_DISPLAYED_FAIL = "${fullName} is not displayed on [b]${page.name}[/b] page";
-	private static final String DEFAULT_IS_NOT_DISPLAYED_PASS = "${fullName} is not displayed as expected on [b]${page.name}[/b] page";
-	private static final String DEFAULT_IS_NOT_DISPLAYED_FAIL = "${fullName} is displayed but it is not expected on [b]${page.name}[/b] page";
-	private static final String DEFAULT_IS_ENABLED_PASS = "${fullName} is enabled as expected on [b]${page.name}[/b] page";
-	private static final String DEFAULT_IS_ENABLED_FAIL = "${fullName} is disabled on [b]${page.name}[/b] page";
-	private static final String DEFAULT_IS_DISABLED_PASS = "${fullName} is disabled as expected on [b]${page.name}[/b] page";
-	private static final String DEFAULT_IS_DISABLED_FAIL = "${fullName} is enabled on [b]${page.name}[/b] page";
-	private static final String DEFAULT_IS_CHECKED_PASS = "${fullName} is checked as expected on [b]${page.name}[/b] page";
-	private static final String DEFAULT_IS_CHECKED_FAIL = "${fullName} is unchecked on [b]${page.name}[/b] page";
-	private static final String DEFAULT_IS_UNCHECKED_PASS = "${fullName} is unchecked as expected on [b]${page.name}[/b] page";
-	private static final String DEFAULT_IS_UNCHECKED_FAIL = "${fullName} is checked on [b]${page.name}[/b] page";
+	private static final String DEFAULT_IS_AVALIABLE_PASS = "${pageObject.fullName} is available as expected on [b]${page.name}[/b] page";
+	private static final String DEFAULT_IS_AVALIABLE_FAIL = "${pageObject.fullName} is not available on [b]${page.name}[/b] page";
+	private static final String DEFAULT_IS_NOT_AVALIABLE_PASS = "${pageObject.fullName} is not available as expected on [b]${page.name}[/b] page";
+	private static final String DEFAULT_IS_NOT_AVALIABLE_FAIL = "${pageObject.fullName} is available but it is not expected on [b]${page.name}[/b] page";
+	private static final String DEFAULT_IS_DISPLAYED_PASS = "${pageObject.fullName} is displayed as expected on [b]${page.name}[/b] page";
+	private static final String DEFAULT_IS_DISPLAYED_FAIL = "${pageObject.fullName} is not displayed on [b]${page.name}[/b] page";
+	private static final String DEFAULT_IS_NOT_DISPLAYED_PASS = "${pageObject.fullName} is not displayed as expected on [b]${page.name}[/b] page";
+	private static final String DEFAULT_IS_NOT_DISPLAYED_FAIL = "${pageObject.fullName} is displayed but it is not expected on [b]${page.name}[/b] page";
+	private static final String DEFAULT_IS_ENABLED_PASS = "${pageObject.fullName} is enabled as expected on [b]${page.name}[/b] page";
+	private static final String DEFAULT_IS_ENABLED_FAIL = "${pageObject.fullName} is disabled on [b]${page.name}[/b] page";
+	private static final String DEFAULT_IS_DISABLED_PASS = "${pageObject.fullName} is disabled as expected on [b]${page.name}[/b] page";
+	private static final String DEFAULT_IS_DISABLED_FAIL = "${pageObject.fullName} is enabled on [b]${page.name}[/b] page";
+	private static final String DEFAULT_IS_CHECKED_PASS = "${pageObject.fullName} is checked as expected on [b]${page.name}[/b] page";
+	private static final String DEFAULT_IS_CHECKED_FAIL = "${pageObject.fullName} is unchecked on [b]${page.name}[/b] page";
+	private static final String DEFAULT_IS_UNCHECKED_PASS = "${pageObject.fullName} is unchecked as expected on [b]${page.name}[/b] page";
+	private static final String DEFAULT_IS_UNCHECKED_FAIL = "${pageObject.fullName} is checked on [b]${page.name}[/b] page";
 	private Provider<AbstractPageObject> provider;
 	private Report report;
 	
@@ -68,25 +67,9 @@ public class DefaultPageObjectVerificator implements PageObjectVerificator {
 	
 	private String message(String messageName, String defaultMessage) {
 		
-		Page page = findPageObject().searchForPage();
-		String pageName;
-		
-		if ( page != null ) {
-			if( page.getName() != null ) {
-				pageName = page.getName();
-			}
-			else {
-				pageName = page.getClass().getSimpleName();
-			}
-		}
-		else {
-			pageName = "Unknown";
-		}
 		return report.message(messageName, defaultMessage)
-			.put("name", findPageObject().getName())
-			.put("fullName", findPageObject().getFullName())
-			.put("type", findPageObject().getTypeString())
-			.put("page.name", pageName).toString();
+			.put("pageObject", findPageObject())
+			.put("page", findPageObject().searchForPage()).toString();
 	}
 
 	@Override
