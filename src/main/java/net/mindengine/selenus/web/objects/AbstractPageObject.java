@@ -44,10 +44,10 @@ public abstract class AbstractPageObject {
 	/**
 	 * Used in findWebDriverElement method so it is instantiated only once
 	 */
-	private WebElement _webDriverElement;
+	private WebElement _webDriverCachedElement;
 	
 	protected void setWebDriverElement(WebElement webDriverElement) {
-		this._webDriverElement = webDriverElement;
+		this._webDriverCachedElement = webDriverElement;
 	}
 	
 	public Browser findBrowser() {
@@ -124,15 +124,16 @@ public abstract class AbstractPageObject {
 	 * @return web-element of WebDriver which corresponds to this page object
 	 */
 	public synchronized WebElement findWebDriverElement() {
-	    if ( _webDriverElement != null ) {
-	        return _webDriverElement;
+	    if ( getUseCache() && _webDriverCachedElement != null) {
+	        return _webDriverCachedElement;
 	    }
-	    
-	    WebElement webElement = instantiateWebDriverElement();
-	    if ( getUseCache() ) {
-	        this._webDriverElement = webElement;
+	    else {
+    	    WebElement webElement = instantiateWebDriverElement();
+    	    if ( getUseCache() ) {
+    	        this._webDriverCachedElement = webElement;
+    	    }
+    	    return webElement;
 	    }
-	    return webElement;
 	}
 	
 	private WebElement instantiateWebDriverElement() {

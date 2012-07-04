@@ -23,6 +23,7 @@ import java.util.Collection;
 
 import net.mindengine.oculus.experior.ClassUtils;
 import net.mindengine.selenus.annotations.Named;
+import net.mindengine.selenus.annotations.UseCache;
 import net.mindengine.selenus.exceptions.InvalidPageObjectException;
 import net.mindengine.selenus.web.objects.AbstractPageObject;
 import net.mindengine.selenus.web.objects.PageObjectList;
@@ -84,18 +85,10 @@ public class DefaultPageObjectFactory extends PageObjectFactory {
 	public <T> T createPageObject(Field field) {
 		AbstractPageObject pageObject = (AbstractPageObject) this.createPageObject(field.getType());
 		
-		Named named = field.getAnnotation(Named.class);
-		if( named != null ) {
-			pageObject.setName(named.value());
-		}
-		else {
-			pageObject.setName(field.getName());
-		}
-		
-		if( field.getAnnotation(FindBy.class) != null || field.getAnnotation(FindBy.class) != null ) {
-			Annotations annotations = new Annotations(field);
-			pageObject.setLocator(annotations.buildBy());
-		}
+		provideLocatorForPageObject(field, pageObject);
+		provideNameForPageObject(field, pageObject);
+        provideCachePageObject(field, pageObject);
+        
 		
 		//Trying to get generic type which identifies type of elements in page object list
 		if ( PageObjectList.class.isAssignableFrom(field.getType()) ) {
@@ -104,6 +97,30 @@ public class DefaultPageObjectFactory extends PageObjectFactory {
 		
 		return (T) pageObject;
 	}
+
+    private void provideLocatorForPageObject(Field field, AbstractPageObject pageObject) {
+        if( field.getAnnotation(FindBy.class) != null || field.getAnnotation(FindBy.class) != null ) {
+			Annotations annotations = new Annotations(field);
+			pageObject.setLocator(annotations.buildBy());
+		}
+    }
+
+    private void provideCachePageObject(Field field, AbstractPageObject pageObject) {
+        if ( field.getAnnotation(UseCache.class) != null ) {
+            pageObject.setUseCache(true);
+        }
+        else pageObject.setUseCache(false);
+    }
+
+    private void provideNameForPageObject(Field field, AbstractPageObject pageObject) {
+        Named named = field.getAnnotation(Named.class);
+		if( named != null ) {
+			pageObject.setName(named.value());
+		}
+		else {
+			pageObject.setName(field.getName());
+		}
+    }
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void setGenericTypeAsElementTypeInPageObjectList(Field field, AbstractPageObject pageObject) {

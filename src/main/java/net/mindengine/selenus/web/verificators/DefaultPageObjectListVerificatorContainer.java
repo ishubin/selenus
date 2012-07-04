@@ -29,7 +29,6 @@ public class DefaultPageObjectListVerificatorContainer extends DefaultPageObject
 	
 	public NumberVerificator<Integer> size() {
 		NumberVerificator<Integer> numberVerificator = findVericatorProvider().numberVerificator(this.pageObject, "Size of elements in " + this.pageObject.getFullName(), new Provider<Integer>() {
-
 			@Override
 			public Integer provide() {
 				return ((PageObjectList<?>)pageObject).size();

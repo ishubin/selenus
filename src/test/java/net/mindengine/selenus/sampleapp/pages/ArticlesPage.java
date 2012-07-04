@@ -18,6 +18,7 @@ package net.mindengine.selenus.sampleapp.pages;
 import org.openqa.selenium.support.FindBy;
 
 import net.mindengine.selenus.annotations.Named;
+import net.mindengine.selenus.annotations.UseCache;
 import net.mindengine.selenus.web.objects.Label;
 import net.mindengine.selenus.web.objects.Link;
 import net.mindengine.selenus.web.objects.PageObjectList;
@@ -27,10 +28,11 @@ import net.mindengine.selenus.web.objects.WebLayout;
 public class ArticlesPage extends MainPage {
 
 	public static class ArticleLayout extends WebLayout {
-		@Named("Title") @FindBy(className="article-title")
+		@Named("Title") @FindBy(css=".article-title span.title")
 		private Label titleLabel;
 		
 		@Named("Date") @FindBy(className="article-date")
+		@UseCache
 		private Label dateLabel;
 		
 		@Named("Text") @FindBy(className="article-text")
@@ -53,7 +55,9 @@ public class ArticlesPage extends MainPage {
 		}
 	}
 	
+	
 	@Named("Articles") @FindBy(xpath="//div[@class='short-article']")
+	@UseCache
 	private PageObjectList<ArticleLayout> articles;
 
 	public PageObjectList<ArticleLayout> getArticles() {

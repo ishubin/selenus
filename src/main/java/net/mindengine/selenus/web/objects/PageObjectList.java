@@ -31,81 +31,94 @@ import org.openqa.selenium.WebElement;
  */
 public class PageObjectList<T extends AbstractPageObject> extends WebLayout implements Iterable<T> {
 
-	private Class<T> elementType;
-	
-	public PageObjectList (Class<T> elementType) {
-		this.setElementType(elementType);
-	}
-	
-	private List<WebElement> _webDriverElements;
-	private PageObjectFactory pageObjectFactory;
-	
-	public synchronized List<WebElement> findWebDriverElements () {
-		if( _webDriverElements == null ) {
-			if ( getParentLayout() != null) {
-				_webDriverElements = getParentLayout().findWebDriverElement().findElements(getLocator());
-			}
-			else {
-				_webDriverElements = getPage().findElements(getLocator());
-			}
-		}
-		return _webDriverElements;
-	}
-	
-	public int size() {
-		return findWebDriverElements().size();
-	}
-	
-	@SuppressWarnings("unchecked")
-	public T get(int index) {
-		WebElement element = findWebDriverElements().get(index);
-		AbstractPageObject pageObject =  getPageObjectFactory().createPageObject(this, getElementType());
-		pageObject.setWebDriverElement(element);
-		pageObject.setName("#" + (index + 1) + " item");
-		return (T) pageObject;
-	}
-	
-	@Override
-	public Iterator<T> iterator() {
-		return new PageObjectListIterator<T>(this, pageObjectFactory, getElementType());
-	}
-	
-	public PageObjectFactory findPageObjectFactory() {
-		if (this.pageObjectFactory == null ) {
-			throw new InvalidPageObjectException("Cannot instantiate child objects. PageObjectFactory should be provided");
-		}
-		return this.pageObjectFactory;
-	}
+    private Class<T> elementType;
+    
+    public PageObjectList (Class<T> elementType) {
+        this.setElementType(elementType);
+    }
+    
+    private List<WebElement> _webDriverCachedElements;
+    private PageObjectFactory pageObjectFactory;
+    
+    public synchronized List<WebElement> findWebDriverElements () {
+        if ( getUseCache() && _webDriverCachedElements != null ) {
+            return _webDriverCachedElements;
+        }
+        else {
+            List<WebElement> webElements = null;
+            if ( getParentLayout() != null) {
+                webElements = getParentLayout().findWebDriverElement().findElements(getLocator());
+            }
+            else {
+                webElements = getPage().findElements(getLocator());
+            }
+            if ( getUseCache() ) {
+                _webDriverCachedElements = webElements;
+            }
+            return webElements;
+        }
+    }
+    
+    public int size() {
+        return findWebDriverElements().size();
+    }
+    
+    @SuppressWarnings("unchecked")
+    public T get(int index) {
+        WebElement element = findWebDriverElements().get(index);
+        AbstractPageObject pageObject =  getPageObjectFactory().createPageObject(this, getElementType());
+        pageObject.setWebDriverElement(element);
+        pageObject.setName("#" + (index + 1) + " item");
+        
+        /*
+         * This is crucial for the item as it doesn't have a locator, 
+         * so it is important to specify that the cached webelement should be used.
+         */
+        pageObject.setUseCache(true);
+        return (T) pageObject;
+    }
+    
+    @Override
+    public Iterator<T> iterator() {
+        return new PageObjectListIterator<T>(this, pageObjectFactory, getElementType());
+    }
+    
+    public PageObjectFactory findPageObjectFactory() {
+        if (this.pageObjectFactory == null ) {
+            throw new InvalidPageObjectException("Cannot instantiate child objects. PageObjectFactory should be provided");
+        }
+        return this.pageObjectFactory;
+    }
 
-	public PageObjectFactory getPageObjectFactory() {
-		return pageObjectFactory;
-	}
+    public PageObjectFactory getPageObjectFactory() {
+        return pageObjectFactory;
+    }
 
-	public void setPageObjectFactory(PageObjectFactory pageObjectFactory) {
-		this.pageObjectFactory = pageObjectFactory;
-	}
+    public void setPageObjectFactory(PageObjectFactory pageObjectFactory) {
+        this.pageObjectFactory = pageObjectFactory;
+    }
 
-	public Class<T> getElementType() {
-		return elementType;
-	}
+    public Class<T> getElementType() {
+        return elementType;
+    }
 
-	public void setElementType(Class<T> elementType) {
-		this.elementType = elementType;
-	}
+    public void setElementType(Class<T> elementType) {
+        this.elementType = elementType;
+    }
 
-	@Override
-	public String getType() {
-		return "list";
-	}
-	
-	@Override
-	public DefaultPageObjectListVerificatorContainer verifyThat() {
-		return new DefaultPageObjectListVerificatorContainer(false, this, findVerificatorProvider());
-	}
-	
-	@Override
-	public DefaultPageObjectListVerificatorContainer assertThat() {
-		return new DefaultPageObjectListVerificatorContainer(true, this, findVerificatorProvider());
-	}
-	
+    @Override
+    public String getType() {
+        return "list";
+    }
+    
+    @Override
+    public DefaultPageObjectListVerificatorContainer verifyThat() {
+        return new DefaultPageObjectListVerificatorContainer(false, this, findVerificatorProvider());
+    }
+    
+    @Override
+    public DefaultPageObjectListVerificatorContainer assertThat() {
+        return new DefaultPageObjectListVerificatorContainer(true, this, findVerificatorProvider());
+    }
+    
 }
