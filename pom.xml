@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.mindengine</groupId>
   <artifactId>selenus</artifactId>
-  <version>12.3.1-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
   <name>Selenus</name>
   <dependencies>
     <dependency>
@@ -15,7 +15,7 @@
     <dependency>
       <groupId>net.mindengine</groupId>
       <artifactId>oculus-experior</artifactId>
-      <version>12.3.9-SNAPSHOT</version>
+      <version>1.0.1</version>
     </dependency>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
@@ -51,6 +51,19 @@
       </plugin>
     </plugins>
   </build>
+  <distributionManagement>
+    <repository>
+      <id>gh-pages</id>
+      <url>file:///${basedir}/../maven-repo/repository</url>
+    </repository>
+  </distributionManagement>
+  <repositories>
+    <repository>
+      <id>mindengine.net</id>
+      <name>mindengine.net repo</name>
+      <url>http://mvnrepo.mindengine.net/repository</url>
+    </repository>
+  </repositories>
   <licenses>
     <license>
       <name>Apache 2</name>
