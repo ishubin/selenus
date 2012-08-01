@@ -56,13 +56,13 @@ import com.thoughtworks.selenium.SeleniumException;
  */
 public class SelenusTest extends OculusTest {
 
-	public static final String FIREFOX = "firefox".intern();
-	public static final String CHROME = "chrome".intern();
-	public static final String ANDROID = "android".intern();
-	public static final String IPHONE = "iphone".intern();
-	public static final String IE = "firefox".intern();
-	public static final String HTMLUNIT = "htmlunit".intern();
-	public static final String BROWSER = "browser".intern();
+	public static final String FIREFOX = "firefox";
+	public static final String CHROME = "chrome";
+	public static final String ANDROID = "android";
+	public static final String IPHONE = "iphone";
+	public static final String IE = "firefox";
+	public static final String HTMLUNIT = "htmlunit";
+	public static final String BROWSER = "browser";
 	
 	private PageFactory pageFactory;
 	private SelenusActionListener selenusActionListener;
