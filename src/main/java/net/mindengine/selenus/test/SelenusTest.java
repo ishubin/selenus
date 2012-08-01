@@ -138,31 +138,26 @@ public class SelenusTest extends OculusTest {
 	}
 	
 	@DataProvider
-	protected Browser browser(DataSourceInformation dataSourceInformation) {
-		if ( dataSourceInformation.getType() != null && !dataSourceInformation.getType().isEmpty()) {
-			try {
-				
-				String browserType = dataSourceInformation.getType();
-				if ( browserType == null || browserType.isEmpty() ) {
-					browserType = getSuiteParameter(BROWSER);
-				}
-				if ( browserType == null || browserType.isEmpty() ) {
-					browserType = getDefaultBrowserType();
-				}
-				
-				Browser browser = new Browser(createWebDriver(dataSourceInformation.getType()));
-				browser.setSelenusActionListener(getSelenusActionListener());
-				browser.setType(browserType);
-				browser.setName(dataSourceInformation.getName());
-				_usedBrowsers.add(browser);
-				return browser;
+	public Browser browser(DataSourceInformation dataSourceInformation) {
+		try {
+			String browserType = dataSourceInformation.getType();
+			if ( browserType == null || browserType.isEmpty() ) {
+				browserType = getSuiteParameter(BROWSER);
 			}
-			catch (Exception e) {
-				throw new IllegalArgumentException("Cannot create browser for type: " + dataSourceInformation.getType());
+			if ( browserType == null || browserType.isEmpty() ) {
+				browserType = getDefaultBrowserType();
 			}
+			
+			Browser browser = new Browser(createWebDriver(browserType));
+			browser.setSelenusActionListener(getSelenusActionListener());
+			browser.setType(browserType);
+			browser.setName(dataSourceInformation.getName());
+			_usedBrowsers.add(browser);
+			return browser;
 		}
-		
-		return null;
+		catch (Exception e) {
+			throw new IllegalArgumentException("Cannot create browser for type: " + dataSourceInformation.getType(), e);
+		}
 	}
 	
 	@DataProvider
