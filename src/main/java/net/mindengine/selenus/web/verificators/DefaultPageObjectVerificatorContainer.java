@@ -18,6 +18,7 @@ package net.mindengine.selenus.web.verificators;
 import net.mindengine.oculus.experior.framework.verification.Provider;
 import net.mindengine.oculus.experior.framework.verification.text.AssertionTextVerificator;
 import net.mindengine.oculus.experior.framework.verification.text.TextVerificator;
+import net.mindengine.oculus.experior.reporter.ReportDesign;
 import net.mindengine.selenus.web.objects.AbstractPageObject;
 import net.mindengine.selenus.web.verificators.objects.AssertionPageObjectVerificator;
 import net.mindengine.selenus.web.verificators.objects.PageObjectVerificator;
@@ -48,6 +49,19 @@ public class DefaultPageObjectVerificatorContainer {
 		else return verificator;
 	}
 	
+	
+	public TextVerificator attribute(final String attributeName) {
+	    TextVerificator textVerificator = findVericatorProvider().textVerificator(pageObject, "Attribute " + ReportDesign.string(attributeName) + " of " + pageObject.getFullName(), new Provider<String>() {
+            @Override
+            public String provide() {
+                return pageObject.getTagAttribute(attributeName);
+            }
+        });
+        if ( assertion ) {
+            return new AssertionTextVerificator(textVerificator);
+        }
+        else return textVerificator;
+	}
 	
 	public TextVerificator text() {
 		TextVerificator textVerificator = findVericatorProvider().textVerificator(pageObject, "Text of " + pageObject.getFullName(), new Provider<String>() {
