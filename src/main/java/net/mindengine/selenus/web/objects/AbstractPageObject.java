@@ -17,6 +17,7 @@ package net.mindengine.selenus.web.objects;
 
 import net.mindengine.oculus.experior.reporter.ReportDesign;
 import net.mindengine.selenus.exceptions.InvalidPageObjectException;
+import net.mindengine.selenus.exceptions.PageObjectIsNotAvailableException;
 import net.mindengine.selenus.web.Browser;
 import net.mindengine.selenus.web.Page;
 import net.mindengine.selenus.web.verificators.DefaultPageObjectVerificatorContainer;
@@ -142,10 +143,20 @@ public abstract class AbstractPageObject {
 		}
 		
 		if ( parentLayout != null ) {
-			return parentLayout.findWebDriverElement().findElement(getLocator());
+		    try {
+		        return parentLayout.findWebDriverElement().findElement(getLocator());
+		    }
+		    catch (NoSuchElementException e) {
+		        throw new PageObjectIsNotAvailableException(this, e);
+            }
 		}
 		else {
-			return findPage().findElement(getLocator());
+		    try {
+		        return findPage().findElement(getLocator());
+		    }
+		    catch (NoSuchElementException e) {
+		        throw new PageObjectIsNotAvailableException(this, e);
+            }
 		}
 	}
 
@@ -162,12 +173,17 @@ public abstract class AbstractPageObject {
 	}
 	
 	public Page searchForPage() {
-		if( parentLayout != null ) {
-			return parentLayout.findPage();
-		}
-		else {
-			return page;
-		}
+	    try {
+    		if( parentLayout != null ) {
+    			return parentLayout.findPage();
+    		}
+    		else {
+    			return page;
+    		}
+	    }
+	    catch (Exception e) {
+            return null;
+        }
 	}
 	
 	/**
@@ -260,6 +276,21 @@ public abstract class AbstractPageObject {
 		}
 		return builder.toString();
 	}
+	
+	public String getFullNonPrettyName() {
+        StringBuilder builder = new StringBuilder();
+        if ( this.getName() != null ) {
+            builder.append("'").append(this.getName()).append("' ");
+        }
+        else { 
+            builder.append("Unknown");
+        }
+        builder.append(this.getType());
+        if ( this.parentLayout != null ) {
+            builder.append(" in ").append(this.getParentLayout().getFullNonPrettyName());
+        }
+        return builder.toString();
+    }
 
 	@Override
 	public String toString() {

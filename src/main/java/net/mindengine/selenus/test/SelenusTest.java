@@ -27,6 +27,7 @@ import net.mindengine.oculus.experior.reporter.ReportDesign;
 import net.mindengine.oculus.experior.reporter.ReportIcon;
 import net.mindengine.oculus.experior.test.descriptors.TestInformation;
 import net.mindengine.oculus.experior.test.resolvers.dataprovider.DataSourceInformation;
+import net.mindengine.selenus.exceptions.PageObjectIsNotAvailableException;
 import net.mindengine.selenus.exceptions.SelenusException;
 import net.mindengine.selenus.web.Browser;
 import net.mindengine.selenus.web.Page;
@@ -38,6 +39,8 @@ import net.mindengine.selenus.web.report.OculusSelenusActionListener;
 import net.mindengine.selenus.web.verificators.OculusVerificatorProvider;
 import net.mindengine.selenus.web.verificators.VerificatorProvider;
 
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.android.AndroidDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -123,9 +126,14 @@ public class SelenusTest extends OculusTest {
 	}
 	
 	
-	@OnException({SelenusException.class, AssertionError.class, SeleniumException.class})
-	protected void takeScreenshotsOnError() {
-		takeScreenshotOfAllBrowsers();
+	@OnException({SelenusException.class, 
+	    AssertionError.class, 
+	    PageObjectIsNotAvailableException.class,
+	    SeleniumException.class, 
+	    NoSuchElementException.class, 
+	    StaleElementReferenceException.class})
+	protected void takeScreenshotsOnError(TestInformation testInformation) {
+	    takeScreenshotOfAllBrowsers();
 	}
 	
 	@Override
