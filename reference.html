@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Selenus - Reference</title>
+        <link href="./main.css" rel="stylesheet" type="text/css"/>
+        <link href="./favicon.png" rel="icon">
+    </head>
+    
+    <body>
+        <!--[if lt IE 9]> <font color="red" size="32px">This website is not supported in Internet Explorer version below 9. Please use alternative browsers: Firefox, Chrome, Safari </font><![endif]-->
+        <div id="header-container">
+            <header>
+                <div id="oculus-logo"></div>
+
+                <h1>Selenus <span>framework</span></h1>
+                <h2>Advanced web testing</h2>
+            </header>
+        </div>
+        <navigation>
+            <ul id="menu">
+                <li><a id="menu-intro" href="./index.html"><span>Welcome</span></a></li>
+                <li><a id="menu-reference" class="selected" class="" href="./reference.html"><span>Reference</span></a></li>
+                <li><a id="menu-download" class="" href="./download.html"><span>Download</span></a></li>
+                <li><a id="menu-github" class="" href="https://github.com/ishubin/selenus"><span>On Github</span></a></li>
+                <li><a id="menu-contact" class="" href="./contact.html"><span>Contact</span></a></li>
+            </ul>
+        </navigation>
+        <div id="content-container">
+            <article>
+                <h2><span class="header-first">Reference</span> <span class="header-second">Table of Contents</span></h2>
+                <ul class="table-of-contents">
+                    <li><a href="#_a_configuration">Configuration</a></li>
+                    <li><a href="#_a_page_model">Page Model</a></li>
+                    <li><a href="#_a_test_implementation">Test Implementation</a></li>
+                    <li><a href="#_a_frontend">Oculus Frontend Integration</a></li>
+                </uL>
+
+
+                <h2 id="_a_configuration"><span class="header-first">Project</span> <span class="header-second">Configuration</span></h2>
+                <p>
+                As <b>Selenus</b> is based on <a href="http://experior.oculus.mindengine.net">Oculus Experior</a> you need to put <b>experior.properties</b> file in the root directory of your project. Change the <b>report.messages.path</b> property to the following:
+                </p>
+                <div class="source">
+<pre>
+report.messages.path = <str>defaultMessages.properties,selenusMessages.properties</str>
+</pre>
+                </div>
+
+                <p>
+                    For using as maven dependency you need to add mindengine.net maven repo to your <b>pom.xml</b>
+                </p>
+                <div class="source">
+<pre>
+<tag>&lt;dependencies&gt;</tag>
+    <tag>&lt;dependency&gt;</tag>
+        <tag>&lt;groupId&gt;</tag>net.mindengine<tag>&lt;/groupId&gt;</tag>
+        <tag>&lt;artifactId&gt;</tag>selenus<tag>&lt;/artifactId&gt;</tag>
+        <tag>&lt;version&gt;</tag>1.0.2<tag>&lt;/version&gt;</tag>
+    <tag>&lt;/dependency&gt;</tag>
+<tag>&lt;/dependencies&gt;</tag>
+<tag>&lt;repositories&gt;</tag>
+    <tag>&lt;repository&gt;</tag>
+        <tag>&lt;id&gt;</tag>mindengine.net<tag>&lt;/id&gt;</tag>
+        <tag>&lt;name&gt;</tag>mindengine.net repo<tag>&lt;/name&gt;</tag>
+        <tag>&lt;url&gt;</tag>http://mvnrepo.mindengine.net/repository<tag>&lt;/url&gt;</tag>
+    <tag>&lt;/repository&gt;</tag>
+<tag>&lt;/repositories&gt;</tag>
+</pre>
+                </div>
+                
+                <h2 id="_a_page_model"><span class="header-first">Page</span> <span class="header-second">Model</span></h2>
+                <p>
+                When it comes to testing of a web application it is always a pain to maintain all locators in every test. To help deal with it <b>Selenus</b> offers rich support of page objects to use in your <b>Page Model</b>.
+                </p>
+
+                <p>
+                Here is how a basic page model can look like
+                </p>
+
+                <div class="source">
+<pre>
+<op>import</op> org.openqa.selenium.support.FindBy;
+<op>import</op> net.mindengine.selenus.annotations.*;
+<op>import</op> net.mindengine.selenus.web.Page;
+<op>import</op> net.mindengine.selenus.web.objects.*;
+
+<an>@Named</an>(<str>"Main"</str>)
+<op>public class</op> MainPage <op>extends</op> Page {
+
+    <an>@Named</an>(<str>"Login"</str>) <an>@FindBy</an>(id=<str>"loginLink"</str>)
+    <op>public</op> Link loginLink;
+}
+</pre>
+                </div>
+                <p>
+                You can use <b>@FindBy</b> annotation from <b>Selenium</b> in your page model. <b>@Named</b> annotation defines name of a page or a page object. You don't really have to define all your page objects as public fields. <b>Selenus</b> can work with all public and private fields and you don't even need getters and setters for them.
+                </p>
+
+                <h2><span class="header-first">Layouts in </span> <span class="header-second">Page Model</span></h2>
+                <p>
+                Sometimes you need to structure your page objects like the are in the tested webapp. There is a simple way you can do it.
+                </p>
+                <div class="source">
+<pre>
+<op>import</op> org.openqa.selenium.support.FindBy;
+<op>import</op> net.mindengine.selenus.annotations.*;
+<op>import</op> net.mindengine.selenus.web.Page;
+<op>import</op> net.mindengine.selenus.web.objects.*;
+
+<an>@Named</an>(<str>"Main"</str>)
+<op>public class</op> MainPage <op>extends</op> Page {
+
+    <an>@Named</an>(<str>"Menu"</str>) <an>@FindBy</an>(id=<str>"navigation"</str>)
+    <op>public</op> Menu menu;
+
+    <op>public static class</op> Menu <op>extends</op> WebLayout {
+
+        <an>@Named</an>(<str>"Home"</str>) <an>@FindBy</an>(partialLinkText=<str>"Home"</str>)
+        <op>public</op> Link homeLink;
+
+        <an>@Named</an>(<str>"Articles"</str>) <an>@FindBy</an>(partialLinkText=<str>"Articles"</str>)
+        <op>public</op> Link articlesLink;
+
+        <an>@Named</an>(<str>"Themes"</str>) <an>@FindBy</an>(partialLinkText=<str>"Themes"</str>)
+        <op>public</op> Link themesLink;
+    }
+
+}
+</pre>
+                </div>
+
+                <h2><span class="header-first">Object List in </span> <span class="header-second">Page Model</span></h2>
+                <p>
+                Quite often you have to deal with list of objects in your tested webapp. <b>Selenus</b> provides a support for list of any type of objects or layouts. In following example you can see how to define list of posts on some tested blog website.
+                </p>
+                <div class="source">
+<pre>
+<op>import</op> org.openqa.selenium.support.FindBy;
+<op>import</op> net.mindengine.selenus.annotations.*;
+<op>import</op> net.mindengine.selenus.web.Page;
+<op>import</op> net.mindengine.selenus.web.objects.*;
+
+<an>@Named</an>(<str>"Articles"</str>)
+<op>public class</op> ArticlesPage <op>extends</op> Page {
+
+    <an>@Named</an>(<str>"Articles"</str>) <an>@FindBy</an>(xpath=<str>"//div[@id='articles']/section"</str>)
+    <an>@UseCache</an>
+    <op>public</op> PageObjectList &lt;ArticleLayout&gt; articles;
+
+    <op>public static class</op> ArticleLayout <op>extends</op> WebLayout {
+
+        <an>@Named</an>(<str>"Title"</str>) <an>@FindBy</an>(css=<str>".title"</str>)
+        <op>public</op> Label title;
+
+        <an>@Named</an>(<str>"Content"</str>) <an>@FindBy</an>(css=<str>".content"</str>)
+        <op>public</op> Label content;
+
+        <an>@Named</an>(<str>"Author"</str>) <an>@FindBy</an>(css=<str>".author"</str>)
+        <op>public</op> Link authorLink;
+    }
+}
+</pre>
+                </div>
+
+                <p>
+                <b>PageObjectList</b> implements <b>Iterable</b> interface so you can use as a reguler Java collection. <b>@UseCache</b> in this example means that once you obtain a list item - it will be stored in cache. This simply saves test execution time as <b>Selenus</b> will look for the element only one time.
+                </p>
+
+                <h2 id="_a_test_implementation"><span class="header-first">Test</span> <span class="header-second">Implementation</span></h2>
+                <p>
+                </p>
+                Now, when we have implemented sample page models, lets try to create a simple test. There is a class <b>SelenusTest</b> which already handles browser and pages instantiation. 
+
+                <div class="source">
+<pre>
+<an>@Test</an>(name=<str>"Articles Sample Test"</str>, project=<str>"MY-TEST-PROJECT"</str>)
+<op>public class</op> ThemesTest <op>extends</op> SampleTest {
+
+    <an>@DataSource</an>
+    <op>public</op> Browser browser;
+
+    <an>@Action</an>(name=<str>"Open Articles page"</str>, next=<str>"checkArticles"</str>)
+    <op>public void</op> openThemesPage (
+                <an>@DataSource</an>(dependencies={<str>"browser"</str>}) MainPage mainPage) {
+        browser.open(<str>"http://mysampletestwebsite.qa"</str>);
+        mainPage.menu.articlesLink.click();
+    }
+
+    <an>@Action</an>(name=<str>"Check articles"</str>)
+    <op>public void</op> checkArticles (
+                <an>@DataSource</an>(dependencies={<str>"browser"</str>}) ArticlesPage articlesPage) {
+        articlesPage.articles.assertThat().size().isGreaterThan(<num>3</num>);
+
+        articlesPage.articles.get(<num>0</num>).title.verifyThat()
+            .text().is(<str>"Some test title"</str>);
+        
+        articlesPage.articles.get(<num>0</num>).authorLink.verifyThat
+            .text().is(<str>"John"</str>);
+    }
+}
+</pre>
+                </div>
+
+                
+                <h2 id="_a_frontend"><span class="header-first">Oculus Frontend</span> <span class="header-second">Integration</span></h2>
+                <p>
+                For integrating your <b>Selenus</b> tests with <b>Oculus Frontend</b> please follow these <a href="http://experior.oculus.mindengine.net/reference.html#_a_frontend_config">instructions</a>.
+                In case of failure <b>Selenus</b> creates screenshots and uploads them to <b>Oculus Frontend</b>.
+                </p>
+            </article>
+        </div>
+        <div id="footer-container">
+            <footer>
+                <span id="footer-author">Developed by <a href="./contact.html">Ivan Shubin</a></span> 
+            </footer>
+        </div>
+    </body>
+</html>
